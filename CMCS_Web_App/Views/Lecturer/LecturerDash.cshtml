@@ -1,0 +1,101 @@
+﻿@model IEnumerable<CMCS_Web_App.Models.Lecturer>
+
+@{
+    Layout = "~/Views/Shared/_LecturerLayout.cshtml";
+    ViewData["Title"] = "LecturerDash";
+}
+
+<div class="max-w-6xl mx-auto">
+    <!-- Welcome Section -->
+    <div class="text-center mb-10">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Lecturer Dash</h1>
+        <p class="text-gray-600">Manage your claims, view submission history, and access your account details.</p>
+    </div>
+
+    <!-- Quick Stats Section -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <a asp-controller="Lecturer" asp-action="MyClaims" class="bg-blue-500 hover:bg-blue-600 text-white text-center py-6 rounded-2xl shadow-lg transition">
+            <i class="mdi mdi-file-multiple text-3xl mb-2 block"></i>
+            <span class="text-lg font-semibold">Total Claims</span>
+        </a>
+
+        <a asp-controller="Lecturer" asp-action="MyClaims" class="bg-green-500 hover:bg-green-600 text-white text-center py-6 rounded-2xl shadow-lg transition">
+            <i class="mdi mdi-check-circle-outline text-3xl mb-2 block"></i>
+            <span class="text-lg font-semibold">Approved Claims</span>
+        </a>
+
+        <a asp-controller="Lecturer" asp-action="MyClaims" class="bg-yellow-500 hover:bg-yellow-600 text-white text-center py-6 rounded-2xl shadow-lg transition">
+            <i class="mdi mdi-clock-outline text-3xl mb-2 block"></i>
+            <span class="text-lg font-semibold">Pending Claims</span>
+        </a>
+
+        <a asp-controller="Lecturer" asp-action="MyClaims" class="bg-red-500 hover:bg-red-600 text-white text-center py-6 rounded-2xl shadow-lg transition">
+            <i class="mdi mdi-close-circle-outline text-3xl mb-2 block"></i>
+            <span class="text-lg font-semibold">Rejected Claims</span>
+        </a>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-center gap-6 mb-10">
+        <a asp-controller="Lecturer" asp-action="SubmitClaim" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg shadow-lg font-semibold transition">
+            <i class="mdi mdi-file-plus-outline mr-2"></i> Submit a New Claim
+        </a>
+
+        <a asp-controller="Lecturer" asp-action="MyClaims" asp-route-id="@ViewBag.LecturerId"
+           class="bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-lg shadow-lg font-semibold transition">
+            <i class="mdi mdi-file-document-outline mr-2"></i> View My Claims
+        </a>
+
+    </div>
+
+    <!-- Lecturer Information Table -->
+    <div class="bg-white shadow-lg rounded-2xl p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Lecturer Information</h2>
+
+        <table class="min-w-full border-collapse border border-gray-300 text-sm">
+            <thead class="bg-gray-900 text-white">
+                <tr>
+                    <th class="py-3 px-4 text-left">First Name</th>
+                    <th class="py-3 px-4 text-left">Last Name</th>
+                    <th class="py-3 px-4 text-left">Email</th>
+                    <th class="py-3 px-4 text-left">Department</th>
+                    <th class="py-3 px-4 text-left">Rate/Hour (R)</th>
+                    <th class="py-3 px-4 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-2 px-4">@item.FirstName</td>
+                            <td class="py-2 px-4">@item.LastName</td>
+                            <td class="py-2 px-4">@item.Email</td>
+                            <td class="py-2 px-4">@item.Department</td>
+                            <td class="py-2 px-4">@item.RatePerHour</td>
+                            <td class="py-2 px-4 text-center">
+                                <a asp-controller="Lecturer" asp-action="Edit" asp-route-firstName="@item.FirstName" asp-route-lastName="@item.LastName" class="text-blue-600 hover:underline">Edit</a> |
+                                <a asp-controller="Lecturer" asp-action="Details" asp-route-firstName="@item.FirstName" asp-route-lastName="@item.LastName" class="text-green-600 hover:underline">Details</a> |
+                                <a asp-controller="Lecturer" asp-action="Delete" asp-route-firstName="@item.FirstName" asp-route-lastName="@item.LastName" class="text-red-600 hover:underline">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-gray-500 py-4">No lecturers found.</td>
+                    </tr>
+                }
+
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-gray-500">No lecturer data available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

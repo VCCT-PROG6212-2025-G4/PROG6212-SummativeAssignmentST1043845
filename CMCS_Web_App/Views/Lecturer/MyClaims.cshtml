@@ -1,0 +1,60 @@
+﻿@model CMCS_Web_App.Models.Lecturer
+@{
+    Layout = "~/Views/Shared/_LecturerLayout.cshtml";
+    ViewData["Title"] = "My Claims";
+}
+
+<div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800 text-center">
+        @ViewBag.LecturerName's Claims
+    </h2>
+
+    @if (Model.Claims != null && Model.Claims.Any())
+    {
+        <table class="min-w-full border-collapse border border-gray-300">
+            <thead class="bg-gray-900 text-white">
+                <tr>
+                    <th class="py-3 px-4 text-left">Claim ID</th>
+                    <th class="py-3 px-4 text-left">Hours Worked</th>
+                    <th class="py-3 px-4 text-left">Hourly Rate</th>
+                    <th class="py-3 px-4 text-left">Total (R)</th>
+                    <th class="py-3 px-4 text-left">Status</th>
+                    <th class="py-3 px-4 text-left">Date Submitted</th>
+                    <th class="py-3 px-4 text-left">Document</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in Model.Claims.OrderByDescending(c => c.DateSubmitted))
+                {
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-2 px-4">@claim.ClaimId</td>
+                        <td class="py-2 px-4">@claim.HoursWorked</td>
+                        <td class="py-2 px-4">@claim.HourlyRate</td>
+                        <td class="py-2 px-4 font-semibold">@(@claim.HoursWorked* @claim.HourlyRate)</td>
+                        <td class="py-2 px-4">
+                            <span class="px-3 py-1 rounded-full text-white @(claim.Status == CMCS_Web_App.Models.ClaimStatus.Approved ? "bg-green-600" : claim.Status == CMCS_Web_App.Models.ClaimStatus.Pending ? "bg-yellow-500" : "bg-red-600")">
+                                @claim.Status
+                            </span>
+                        </td>
+                        <td class="py-2 px-4">@claim.DateSubmitted.ToString("f")</td>
+                        <td class="py-2 px-4">
+                            @if (!string.IsNullOrEmpty(claim.SupportingDocumentPath))
+                            {
+                                <a href="@claim.SupportingDocumentPath" target="_blank" class="text-blue-600 hover:underline">View</a>
+                            }
+                            else
+                            {
+                                <span class="text-gray-400">None</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-center text-gray-600">No claims submitted yet.</p>
+    }
+</div>
+

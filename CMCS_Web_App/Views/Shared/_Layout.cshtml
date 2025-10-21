@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CMCS Web App</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Material Design Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@@mdi/font/css/materialdesignicons.min.css" rel="stylesheet" />
+
+    <!-- Custom Styles -->
+    <style>
+        /* Active link style */
+        .nav-active {
+            color: #facc15; /* Tailwind yellow-400 */
+            border-bottom: 2px solid #facc15;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <header class="bg-gray-900 text-white shadow-md">
+        <nav class="container mx-auto flex flex-wrap justify-between items-center px-4 py-3">
+            <a asp-controller="Home" asp-action="Index" class="text-2xl font-semibold tracking-wide hover:text-yellow-400 transition">
+                <i class="mdi mdi-application-braces-outline text-yellow-400 mr-1"></i> CMCS
+            </a>
+
+            <!-- Hamburger for mobile -->
+            <button class="block lg:hidden text-yellow-400 focus:outline-none" id="nav-toggle">
+                <i class="mdi mdi-menu text-2xl"></i>
+            </button>
+
+            <!-- Navigation Links -->
+            <ul id="nav-links" class="hidden lg:flex lg:items-center lg:space-x-6 w-full lg:w-auto mt-4 lg:mt-0">
+                <li>
+                    <a asp-controller="Home" asp-action="Index"
+                       class="flex items-center gap-2 hover:text-yellow-400 transition">
+                        <i class="mdi mdi-home"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Lecturer" asp-action="LecturerDash"
+                       class="flex items-center gap-2 hover:text-yellow-400 transition">
+                        <i class="mdi mdi-account"></i> Lecturer Dash
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Coordinator" asp-action="Index"
+                       class="flex items-center gap-2 hover:text-yellow-400 transition">
+                        <i class="mdi mdi-account-tie"></i> Co-ord Dash
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Manager" asp-action="Index"
+                       class="flex items-center gap-2 hover:text-yellow-400 transition">
+                        <i class="mdi mdi-account-cog"></i> Manager Dash
+                    </a>
+                </li>
+            </ul>
+       </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto flex-grow mt-6 px-4">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-4 mt-10">
+        <div class="container mx-auto text-center text-sm">
+            &copy; @DateTime.Now.Year - <span class="text-white font-semibold">CMCS Web App</span> |
+            <a asp-controller="Home" asp-action="Privacy" class="text-yellow-400 hover:underline">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Simple mobile nav toggle
+        document.getElementById('nav-toggle').addEventListener('click', () => {
+            const nav = document.getElementById('nav-links');
+            nav.classList.toggle('hidden');
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

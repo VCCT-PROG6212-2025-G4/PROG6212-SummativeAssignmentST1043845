@@ -1,0 +1,50 @@
+﻿@model CMCS_Web_App.Models.Claim
+@{
+    Layout = "~/Views/Shared/_LecturerLayout.cshtml";
+    ViewData["Title"] = "Submit Claim";
+}
+
+<div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8 mt-6">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">
+        Submit Claim - @ViewBag.LecturerName
+    </h2>
+
+    <form asp-controller="Lecturer" asp-action="SubmitClaim" method="post" enctype="multipart/form-data" class="space-y-6">
+        @Html.AntiForgeryToken()
+        <label>Lecturer</label>
+
+        <label for="FirstName">First Name</label>
+        <input asp-for="FirstName" class="form-input" required />
+
+        <label for="LastName">Last Name</label>
+        <input asp-for="LastName" class="form-input" required />
+
+        
+        <div>
+            <label class="block text-gray-700 font-semibold mb-1">Hours Worked</label>
+            <input asp-for="HoursWorked" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-400" required />
+        </div>
+
+        <div>
+            <label class="block text-gray-700 font-semibold mb-1">Hourly Rate (R)</label>
+            <input asp-for="HourlyRate" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-400" required />
+        </div>
+
+        <div>
+            <label class="block text-gray-700 font-semibold mb-1">Notes</label>
+            <textarea asp-for="Notes" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-400" rows="4" placeholder="Add any relevant information..."></textarea>
+        </div>
+
+        <div>
+            <label class="block text-gray-700 font-semibold mb-1">Upload Supporting Document</label>
+            <input type="file" name="SupportingDocument" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-400" accept=".pdf,.docx,.xlsx" />
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition">
+                <i class="mdi mdi-send mr-2"></i> Submit Claim
+            </button>
+        </div>
+    </form>
+</div>
+

@@ -1,0 +1,92 @@
+﻿@* Views/Shared/_LecturerLayout.cshtml *@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CMCS</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Material Design Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@@mdi/font/css/materialdesignicons.min.css" rel="stylesheet" />
+
+    <style>
+        .nav-active {
+            color: #facc15; /* Tailwind yellow-400 */
+            border-bottom: 2px solid #facc15;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex flex-col min-h-screen">
+
+    <!-- Navigation Bar -->
+    <header class="bg-gray-900 text-white shadow-md">
+        <nav class="container mx-auto flex flex-wrap justify-between items-center px-4 py-3">
+            <!-- Logo / CMCS -->
+            <a asp-controller="Lecturer" asp-action="LecturerDash" class="text-2xl font-semibold tracking-wide hover:text-yellow-400 transition">
+                <i class="mdi mdi-school-outline text-yellow-400 mr-1"></i> CMCS
+            </a>
+
+            <!-- Navbar Links -->
+            <ul class="flex flex-wrap items-center gap-6 text-sm md:text-base">
+                <li>
+                    <a asp-controller="Home" asp-action="Index" class="hover:text-yellow-400 transition">
+                        <i class="mdi mdi-home-outline mr-1"></i> Home
+                    </a>
+                </li>
+
+                <!-- Dashboard Link -->
+                @* <li>
+                    <a asp-controller="Lecturer" asp-action="LecturerDash" class="hover:text-yellow-400 transition">
+                        <i class="mdi mdi-view-dashboard-outline mr-1"></i> Lecturer Dash
+                    </a>
+                </li>
+                *@
+                <li>
+                    <a asp-controller="Lecturer" asp-action="SubmitClaim" class="hover:text-yellow-400 transition">
+                        <i class="mdi mdi-file-plus-outline mr-1"></i> Submit Claim
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Lecturer" asp-action="MyClaims" class="hover:text-yellow-400 transition">
+                        <i class="mdi mdi-file-document-outline mr-1"></i> My Claims
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-controller="Home" asp-action="Index" class="hover:text-yellow-400 transition">
+                        <i class="mdi mdi-logout mr-1"></i> Logout
+                    </a>
+                </li>
+            </ul>
+
+        </nav>
+    </header>
+
+    <!-- ASCII Welcome Banner -->
+    <div class="text-center mt-8">
+        <pre class="text-yellow-400 text-sm md:text-base font-mono whitespace-pre">
+__        __   _                            _             
+\ \      / /__| | ___ ___  _ __ ___   ___  | | ___  _ __  
+ \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \ / _ \ | |/ _ \| '_ \ 
+  \ V  V /  __/ | (_| (_) | | | | | |  __/ | | (_) | | | |
+   \_/\_/ \___|_|\___\___/|_| |_| |_|\___| |_|\___/|_| |_|</pre>
+
+        <h1 class="text-3xl font-bold text-gray-800">Welcome Lecturer</h1>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 mt-6 flex-grow">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 text-center py-3 mt-8">
+        © @DateTime.Now.Year - CMCS Web App
+    </footer>
+</body>
+</html>
+
