@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xy000oWFRfI=",
+  "dgSpecHash": "MDCRoAbjpj8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_App\\CMCS_Web_App.csproj",
+  "projectFilePath": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\CMCS_Web_App.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KBM\\.nuget\\packages\\bootstrap\\5.3.8\\bootstrap.5.3.8.nupkg.sha512",
     "C:\\Users\\KBM\\.nuget\\packages\\font.awesome\\5.15.4\\font.awesome.5.15.4.nupkg.sha512",
