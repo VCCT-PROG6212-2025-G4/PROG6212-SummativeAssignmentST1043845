@@ -7,8 +7,8 @@ namespace CMCS_Web_App.Models
 {
     public class Lecturer
     {
-        //[Key]
-        //public int LecturerId { get; set; }
+        [Key]
+        public int LecturerId { get; set; }
 
         [Required]
         public  string? FirstName { get; set; }

@@ -87,11 +87,16 @@ public class LecturerController : Controller
             .OrderByDescending(c => c.DateSubmitted)
             .ToListAsync();
 
-        if (!claims.Any()) return NotFound();
+        if (!claims.Any())
+        {
+            ViewBag.Message = "No claims found for this lecturer.";
+            return View("MyClaims"); // still load the page, just empty
+        }
 
         ViewBag.LecturerName = $"{firstName} {lastName}";
         return View(claims);
     }
+
 
 }
 

@@ -1,4 +1,5 @@
-﻿@model CMCS_Web_App.Models.Lecturer
+﻿@model IEnumerable<CMCS_Web_App.Models.Claim>
+
 @{
     Layout = "~/Views/Shared/_LecturerLayout.cshtml";
     ViewData["Title"] = "My Claims";
@@ -9,7 +10,11 @@
         @ViewBag.LecturerName's Claims
     </h2>
 
-    @if (Model.Claims != null && Model.Claims.Any())
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <p class="text-center text-gray-600">@ViewBag.Message</p>
+    }
+    else if (Model != null && Model.Any())
     {
         <table class="min-w-full border-collapse border border-gray-300">
             <thead class="bg-gray-900 text-white">
@@ -24,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var claim in Model.Claims.OrderByDescending(c => c.DateSubmitted))
+                @foreach (var claim in Model.OrderByDescending(c => c.DateSubmitted))
                 {
                     <tr class="border-b hover:bg-gray-50">
                         <td class="py-2 px-4">@claim.ClaimId</td>
@@ -57,4 +62,5 @@
         <p class="text-center text-gray-600">No claims submitted yet.</p>
     }
 </div>
+
 
