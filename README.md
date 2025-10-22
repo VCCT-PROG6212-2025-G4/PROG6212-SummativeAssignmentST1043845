@@ -1,6 +1,6 @@
-# 🏫 CMCS Web Application
+#  CMCS Web Application
 
-## 📖 Overview
+##  Overview
 
 The **Claim Management and Coordination System (CMCS)** is a web-based platform built with **ASP.NET Core MVC** and **Entity Framework Core** to streamline and manage lecturer claim submissions at an academic institution.  
 The system enables **Lecturers** to submit and track claims, while **Coordinators** and **Managers** can review, approve, reject, or hold claims for further evaluation.
@@ -9,32 +9,32 @@ CMCS provides a clear workflow for claim management, status tracking, and report
 
 ---
 
-## ⚙️ Key Features
+##  Key Features
 
-- 🎓 **Lecturer Dashboard**
+-  **Lecturer Dashboard**
   - Submit new claims with details such as hours worked, hourly rate, and notes.
   - Upload supporting documents for verification.
   - View all personal claims with timestamps and their current statuses (Pending, Approved, or Rejected).
 
-- 🧑‍🏫 **Coordinator Dashboard**
+-  **Coordinator Dashboard**
   - Login required to access.
   - Review all lecturer claims in the system.
   - Approve, reject, or mark claims as pending (for later review).
 
-- 👨‍💼 **Manager Dashboard**
+-  **Manager Dashboard**
   - Login required to access.
   - View all claims and their statuses for oversight.
   - Option to finalize or audit coordinator actions.
 
-- 📊 **Reports Page (Home Dashboard)**
+-  **Reports Page (Home Dashboard)**
   - Displays total claims count and status breakdown (Total, Approved, Pending, Rejected).
   - Links directly to a reporting view showing claim summaries.
 
 ---
 
-## 🧩 Application Structure
+##  Application Structure
 
-### 🏗️ Controllers
+###  Controllers
 
 | Controller | Purpose | Key Actions |
 
@@ -46,7 +46,7 @@ CMCS provides a clear workflow for claim management, status tracking, and report
 
 ---
 
-## 🗂️ Project Structure
+##  Project Structure
 CMCS_Web_App/
 ├── Controllers/
 │ ├── HomeController.cs
@@ -80,7 +80,7 @@ CMCS_Web_App/
 
 ---
 
-## 🧾 Claim Workflow
+##  Claim Workflow
 
 1. **Lecturer** logs in and submits a claim.  
 2. **Claim** is stored in the database with status = `Pending`.  
@@ -91,14 +91,14 @@ CMCS_Web_App/
 ---
 
 ## Login details 
-Co-ordinator@cmcs.com" && password == "67890
-Manager@cmcs.com" && password == "12345
+- Co-ordinator@cmcs.com" && password == "67890
+- Manager@cmcs.com" && password == "12345
 
 ---
 
 ## Links
-YouTube Link: https://youtu.be/DwG_JdK6Yc0
-GitHub Link: https://github.com/VCCT-PROG6212-2025-G4/PROG6212-PART2ST1043845
+- YouTube Link: https://youtu.be/DwG_JdK6Yc0
+- GitHub Link: https://github.com/VCCT-PROG6212-2025-G4/PROG6212-PART2ST1043845
 
 
 
