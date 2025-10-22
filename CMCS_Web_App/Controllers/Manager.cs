@@ -22,7 +22,7 @@ namespace CMCS_Web_App.Controllers
  //--------------------------------------------------------------------------------------------------------------------------------//
 
         /// <summary>
-        /// Manager DASHBOARD
+        /// Manager dash login
         /// </summary>
         /// <returns></returns>
         public async Task<IActionResult> ManagerDash()
@@ -39,7 +39,13 @@ namespace CMCS_Web_App.Controllers
             return View("ManagerDash", claims);
         }
 
-        // APPROVE CLAIM
+ //---------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// Approve claim logic for manager , to approve a claim
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Approve(int id)
         {
@@ -51,7 +57,13 @@ namespace CMCS_Web_App.Controllers
             return RedirectToAction(nameof(ManagerDash));
         }
 
-        // REJECT CLAIM
+ //---------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// Reject claim logic for manager , to reject a claim
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Reject(int id)
         {
@@ -63,7 +75,13 @@ namespace CMCS_Web_App.Controllers
             return RedirectToAction(nameof(ManagerDash));
         }
 
-        // SET PENDING (ON HOLD)
+ //---------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// Pending claim status logic for manager , to set a claim back to pending
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> SetPending(int id)
         {
@@ -76,4 +94,6 @@ namespace CMCS_Web_App.Controllers
         }
     }
 }
+
+//--------------------------------------------------o-o-o-000-END OF FILE-000-o-o-o-------------------------------------------------------------------------------------------------------------//
 

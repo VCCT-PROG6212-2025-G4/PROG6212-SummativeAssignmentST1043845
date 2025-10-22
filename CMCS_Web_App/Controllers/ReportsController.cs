@@ -16,7 +16,10 @@ namespace CMCS_Web_App.Controllers
             _context = context;
         }
 
-        // GET: Reports/Index
+        /// <summary>
+        /// GET: Reports/Index
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             var totalClaims = await _context.Claims.CountAsync();
@@ -29,7 +32,7 @@ namespace CMCS_Web_App.Controllers
             ViewBag.PendingClaims = pendingClaims;
             ViewBag.RejectedClaims = rejectedClaims;
 
-            // Optionally pass claims to view
+           
             var allClaims = await _context.Claims
                 .OrderByDescending(c => c.DateSubmitted)
                 .ToListAsync();
@@ -38,4 +41,6 @@ namespace CMCS_Web_App.Controllers
         }
     }
 }
-    
+
+//--------------------------------------------------o-o-o-000-END OF FILE-000-o-o-o-------------------------------------------------------------------------------------------------------------//
+
