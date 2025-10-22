@@ -19,8 +19,12 @@ namespace CMCS_Web_App.Controllers
             _context = context;
         }
 
-       
-        // DASHBOARD
+//--------------------------------------------------------------------------------------------------------------------------------------------------//
+      /// <summary>
+      /// Logic managing login for coordinators
+      ///  Co-ordinator Dash login method
+      /// </summary> 
+     
         public async Task<IActionResult> CoordDash()
         {
             if (TempData["IsCoordinatorLoggedIn"] == null || !(bool)TempData["IsCoordinatorLoggedIn"]!)
@@ -35,7 +39,13 @@ namespace CMCS_Web_App.Controllers
             return View("CoordDash", claims);
         }
 
-        // APPROVE CLAIM
+//------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// Approve claim logic
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Approve(int id)
         {
@@ -47,7 +57,13 @@ namespace CMCS_Web_App.Controllers
             return RedirectToAction(nameof(CoordDash));
         }
 
-        // REJECT CLAIM
+ //------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// Reject claim logic
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Reject(int id)
         {
@@ -59,7 +75,13 @@ namespace CMCS_Web_App.Controllers
             return RedirectToAction(nameof(CoordDash));
         }
 
-        // SET PENDING (ON HOLD)
+ //------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// Set pending status 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> SetPending(int id)
         {
@@ -72,3 +94,4 @@ namespace CMCS_Web_App.Controllers
         }
     }
 }
+//--------------------------------------------------o-o-o-000-END OF FILE-000-o-o-o-------------------------------------------------------------------------------------------------------------//
