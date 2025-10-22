@@ -15,6 +15,14 @@ namespace CMCS_Web_App.Controllers
             _logger = logger;
         }
 
+        //--------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// Login credential logic management
+        /// I made the home controller the anchor for the login details for coordinator and manager to improve wiring
+        /// This logic is to make sure that the coordinator and manager pages are accessed by authorized users only
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
@@ -66,6 +74,7 @@ namespace CMCS_Web_App.Controllers
             ViewBag.Error = "Invalid login credentials.";
             return View();
         }
+       
 
         [HttpPost]
         public async Task<IActionResult> Logout()
@@ -87,3 +96,5 @@ namespace CMCS_Web_App.Controllers
         }
     }
 }
+
+//--------------------------------------------------o-o-o-000-END OF FILE-000-o-o-o-------------------------------------------------------------------------------------------------------------//
