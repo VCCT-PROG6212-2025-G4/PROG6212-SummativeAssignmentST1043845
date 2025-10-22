@@ -60,6 +60,13 @@
                         <i class="mdi mdi-account-cog"></i> Manager Dash
                     </a>
                 </li>
+
+                <form asp-controller="Home" asp-action="Logout" method="post">
+                    <button type="submit" class="hover:text-yellow-400 transition">
+                        <i class="mdi mdi-logout mr-1"></i> Logout
+                    </button>
+                </form>
+
             </ul>
        </nav>
     </header>

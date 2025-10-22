@@ -21,8 +21,8 @@ namespace CMCS_Web_App
             builder.Services.AddAuthentication("CMCSAuth")
             .AddCookie("CMCSAuth", options =>
             {
-               options.LoginPath = "/Account/Login"; // Redirect here if not authenticated
-               options.AccessDeniedPath = "/Account/AccessDenied"; // Optional
+               options.LoginPath = "/Home/Login"; // Redirect here if not authenticated
+               options.AccessDeniedPath = "/Home/AccessDenied"; // Optional
           });
 
             builder.Services.AddAuthorization();

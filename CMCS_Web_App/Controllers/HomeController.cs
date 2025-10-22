@@ -1,6 +1,8 @@
-using System.Diagnostics;
 using CMCS_Web_App.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Security.Claims;
 
 namespace CMCS_Web_App.Controllers
 {
@@ -17,6 +19,58 @@ namespace CMCS_Web_App.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(string email, string password)
+        {
+            if (email == "Co-ordinator@cmcs.com" && password == "67890")
+            {
+                var claims = new List<System.Security.Claims.Claim>
+        {
+            new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, email),
+            new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, "Coordinator")
+        };
+
+                var identity = new System.Security.Claims.ClaimsIdentity(claims, "CMCSAuth");
+                var principal = new System.Security.Claims.ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync("CMCSAuth", principal);
+
+                return RedirectToAction("CoordDash", "Coordinator");
+            }
+
+            if (email == "Manager@cmcs.com" && password == "12345")
+            {
+                var claims = new List<System.Security.Claims.Claim>
+        {
+            new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, email),
+            new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, "Manager")
+        };
+
+                var identity = new System.Security.Claims.ClaimsIdentity(claims, "CMCSAuth");
+                var principal = new System.Security.Claims.ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync("CMCSAuth", principal);
+
+                return RedirectToAction("ManagerDash", "Manager");
+            }
+
+            ViewBag.Error = "Invalid login credentials.";
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("CMCSAuth");
+            return RedirectToAction("Login");
+        }
+
 
         public IActionResult Privacy()
         {
