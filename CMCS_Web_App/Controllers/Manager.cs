@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace CMCS_Web_App.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Manager")]
     public class ManagerController : Controller
     {
         private readonly AppDbContext _context;
@@ -18,41 +18,7 @@ namespace CMCS_Web_App.Controllers
             _context = context;
         }
 
-        // LOGIN (temporary simple login system for POE)
        
-        [HttpPost]
-        public async Task<IActionResult> Login(string email, string password)
-        {
-            // Simple demo credentials
-            if (email == "Manager@cmcs.com" && password == "12345")
-            {
-                // Create user claims
-                var claims = new List<System.Security.Claims.Claim>
-                {
-                  new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, email),
-                  new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, "Manager")
-               };
-
-
-                var identity = new ClaimsIdentity(claims, "CMCSAuth");
-                var principal = new ClaimsPrincipal(identity);
-
-                // Sign in the user
-                await HttpContext.SignInAsync("CMCSAuth", principal);
-
-                return RedirectToAction("ManagerDash", "Manager");
-            }
-
-            ViewBag.Error = "Invalid login credentials.";
-            return View();
-        }
-
-        // LOGOUT
-        public IActionResult Logout()
-        {
-            TempData["IsManagerLoggedIn"] = false;
-            return RedirectToAction("Login");
-        }
 
         // DASHBOARD
         public async Task<IActionResult> ManagerDash()

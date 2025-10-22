@@ -28,6 +28,9 @@ namespace CMCS_Web_App.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
+            await HttpContext.SignOutAsync("CMCSAuth");
+
+
             if (email == "Co-ordinator@cmcs.com" && password == "67890")
             {
                 var claims = new List<System.Security.Claims.Claim>
