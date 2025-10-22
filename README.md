@@ -59,8 +59,9 @@ CMCS_Web_App/
 │ ├── Claim.cs
 │ ├── Lecturer.cs
 │ ├── ClaimStatus.cs
+│ ├── Reports.cs
 │ └── AppDbContext.cs
-│
+│  
 ├── Views/
 │ ├── Home/
 │ ├── Lecturer/
@@ -92,6 +93,13 @@ CMCS_Web_App/
 ## Login details 
 Co-ordinator@cmcs.com" && password == "67890
 Manager@cmcs.com" && password == "12345
+
+---
+
+## Links
+YouTube Link: https://youtu.be/DwG_JdK6Yc0
+GitHub Link: https://github.com/VCCT-PROG6212-2025-G4/PROG6212-PART2ST1043845
+
 
 
 
