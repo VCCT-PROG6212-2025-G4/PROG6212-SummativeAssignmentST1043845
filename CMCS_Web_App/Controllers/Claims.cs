@@ -16,14 +16,24 @@ namespace CMCS_Web_App.Controllers
             _context = context;
         }
 
-        // GET: Claims
+        /// <summary>
+        /// GET: Claims
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             var claims = await _context.Claims.ToListAsync();
             return View(claims);
         }
 
-        // GET: Claims/Details/5
+//--------------------------------------------------------------------------------------------------------------------------------------//
+
+
+        /// <summary>
+        /// GET: Claims/Details/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -32,7 +42,9 @@ namespace CMCS_Web_App.Controllers
             if (claim == null) return NotFound();
 
             return View(claim);
-        }
+       }
+
+//---------------------------------------------------------------------------------------------------------------------------------------//
 
         //// GET: Claims/Create
         //public IActionResult Create()
@@ -81,7 +93,13 @@ namespace CMCS_Web_App.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
 
-        // GET: Claims/Edit/5
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// GET: Claims/Edit/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -92,7 +110,14 @@ namespace CMCS_Web_App.Controllers
             return View(claim);
         }
 
-        // POST: Claims/Edit/5
+        //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// POST: Claims/Edit/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="claim"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Claim claim)
@@ -118,7 +143,13 @@ namespace CMCS_Web_App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Claims/Approve/5
+ //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// GET: Claims/Approve/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Approve(int id)
         {
@@ -132,7 +163,13 @@ namespace CMCS_Web_App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Claims/Reject/5
+ //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// GET: Claims/Reject/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Reject(int id)
         {
@@ -146,7 +183,15 @@ namespace CMCS_Web_App.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Claims/Delete/5
+                
+
+ //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// GET: Claims/Delete/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -157,7 +202,15 @@ namespace CMCS_Web_App.Controllers
             return View(claim);
         }
 
-        // POST: Claims/Delete/5
+                
+
+ //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// POST: Claims/Delete/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -173,3 +226,5 @@ namespace CMCS_Web_App.Controllers
         }
     }
 }
+        
+//--------------------------------------------------o-o-o-000-END OF FILE-000-o-o-o-------------------------------------------------------------------------------------------------------------//

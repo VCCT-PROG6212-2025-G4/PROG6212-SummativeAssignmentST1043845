@@ -1,0 +1,7 @@
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App_Tests\bin\Debug\net8.0\CoverletSourceRootsMapping_CMCS_Web_App_Tests
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App_Tests\obj\Debug\net8.0\CMCS_Web_App_Tests.csproj.AssemblyReference.cache
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App_Tests\obj\Debug\net8.0\CMCS_Web_App_Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App_Tests\obj\Debug\net8.0\CMCS_Web_App_Tests.AssemblyInfoInputs.cache
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App_Tests\obj\Debug\net8.0\CMCS_Web_App_Tests.AssemblyInfo.cs
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App_Tests\obj\Debug\net8.0\CMCS_Web_App_Tests.csproj.CoreCompileInputs.cache
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App_Tests\obj\Debug\net8.0\CMCS_Web_App_Tests.sourcelink.json

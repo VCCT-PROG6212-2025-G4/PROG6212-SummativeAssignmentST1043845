@@ -18,7 +18,7 @@ namespace CMCS_Web_App.Models
         //[Required]
         //public int LecturerId { get; set; }
 
-        //public  Lecturer? Lecturer { get; set; } // Navigation property
+        //public required Lecturer Lecturer { get; set; } // Navigation property
 
         [Required]
         [StringLength(50)]
@@ -35,14 +35,14 @@ namespace CMCS_Web_App.Models
         [Range(0, 1000)]
         public decimal HourlyRate { get; set; }
 
-        public string? Notes { get; set; }
+        public required string? Notes { get; set; }
 
         public decimal TotalAmount => HoursWorked * HourlyRate;
 
         public ClaimStatus Status { get; set; } = ClaimStatus.Pending;
 
         // File upload
-        public string? SupportingDocumentPath { get; set; }
+        public required string? SupportingDocumentPath { get; set; }
 
         [NotMapped]
         public IFormFile? Document { get; set; }

@@ -99,5 +99,6 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\uploads\3dcfcf78-797f-4fb5-8c09-d6a08046fbac_Resume..docx
 wwwroot\uploads\4d2dacef-5b69-4182-8dac-e00c80351e78_PROG6212POE.pdf
 wwwroot\uploads\73ec1bb0-088d-4605-9d9a-0db962815978_INSY6212 Assignment 2.docx
