@@ -1,0 +1,58 @@
+﻿@model IEnumerable<CMCS_Web_App.Models.Claim>
+@{
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    ViewData["Title"] = "Manager Dashboard";
+}
+
+<div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-8 mt-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Manager Dashboard</h2>
+
+    <table class="min-w-full border-collapse border border-gray-300 text-sm">
+        <thead class="bg-gray-900 text-white">
+            <tr>
+                <th class="py-3 px-4 text-left">Claim ID</th>
+                <th class="py-3 px-4 text-left">Lecturer</th>
+                <th class="py-3 px-4 text-left">Hours</th>
+                <th class="py-3 px-4 text-left">Rate (R)</th>
+                <th class="py-3 px-4 text-left">Total (R)</th>
+                <th class="py-3 px-4 text-left">Status</th>
+                <th class="py-3 px-4 text-left">Date Submitted</th>
+                <th class="py-3 px-4 text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-2 px-4">@claim.ClaimId</td>
+                    <td class="py-2 px-4">@claim.FirstName @claim.LastName</td>
+                    <td class="py-2 px-4">@claim.HoursWorked</td>
+                    <td class="py-2 px-4">@claim.HourlyRate</td>
+                    <td class="py-2 px-4 font-semibold">@(@claim.HoursWorked* @claim.HourlyRate)</td>
+                    <td class="py-2 px-4">
+                        <span class="px-3 py-1 rounded-full text-white @(claim.Status == CMCS_Web_App.Models.ClaimStatus.Approved ? "bg-green-600" : claim.Status == CMCS_Web_App.Models.ClaimStatus.Pending ? "bg-yellow-500" : "bg-red-600")">
+                            @claim.Status
+                        </span>
+                    </td>
+                    <td class="py-2 px-4">@claim.DateSubmitted.ToString("f")</td>
+                    <td class="py-2 px-4 text-center space-x-2">
+                        <form asp-action="Approve" method="post" class="inline">
+                            <input type="hidden" name="id" value="@claim.ClaimId" />
+                            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">Approve</button>
+                        </form>
+
+                        <form asp-action="Reject" method="post" class="inline">
+                            <input type="hidden" name="id" value="@claim.ClaimId" />
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Reject</button>
+                        </form>
+
+                        <form asp-action="SetPending" method="post" class="inline">
+                            <input type="hidden" name="id" value="@claim.ClaimId" />
+                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">Pending</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,7 +1,8 @@
 using CMCS_Web_App.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
-
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMCS_Web_App
 {
@@ -17,6 +18,15 @@ namespace CMCS_Web_App
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddAuthentication("CMCSAuth")
+            .AddCookie("CMCSAuth", options =>
+            {
+               options.LoginPath = "/Account/Login"; // Redirect here if not authenticated
+               options.AccessDeniedPath = "/Account/AccessDenied"; // Optional
+          });
+
+            builder.Services.AddAuthorization();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -31,7 +41,7 @@ namespace CMCS_Web_App
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

@@ -44,12 +44,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Coordinator/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29vcmRpbmF0b3JcQ3JlYXRlLmNzaHRtbA==
+[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Coordinator/CoordDash.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29vcmRpbmF0b3JcQ29vcmREYXNoLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Coordinator/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29vcmRpbmF0b3JcRWRpdC5jc2h0bWw=
+[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Coordinator/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29vcmRpbmF0b3JcTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Dashboard/Index.cshtml]
@@ -76,24 +76,32 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcU3VibWl0Q2xhaW0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Manager/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxDcmVhdGUuY3NodG1s
+[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Manager/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Manager/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxEZWxldGUuY3NodG1s
+[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Manager/ManagerDash.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxNYW5hZ2VyRGFzaC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Manager/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxFZGl0LmNzaHRtbA==
+[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Reports/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Shared/_CoordinatorLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Db29yZGluYXRvckxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Shared/_LecturerLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MZWN0dXJlckxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Shared/_ManagerLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9NYW5hZ2VyTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/Shared/_ValidationScriptsPartial.cshtml]

@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using CMCS_Web_App.Data;
 using CMCS_Web_App.Models;
-using CMCS_Web_App.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CMCS_Web_App.Controllers
 {
+    [Authorize]
     public class CoordinatorController : Controller
     {
         private readonly AppDbContext _context;
@@ -14,80 +19,90 @@ namespace CMCS_Web_App.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index() =>
-            View(await _context.Coordinators.ToListAsync());
-
-        public async Task<IActionResult> Details(int? id)
+        // LOGIN (temporary simple login system for POE)
+        [HttpPost]
+        public async Task<IActionResult> Login(string email, string password)
         {
-            if (id == null) return NotFound();
-            var coordinator = await _context.Coordinators.FirstOrDefaultAsync(m => m.CoordinatorId == id);
-            if (coordinator == null) return NotFound();
-            return View(coordinator);
-        }
-
-        public IActionResult Create() => View();
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Coordinator coordinator)
-        {
-            if (ModelState.IsValid)
+            // Simple demo credentials
+            if (email == "Co-ordinator@cmcs.com" && password == "67890")
             {
-                _context.Add(coordinator);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(coordinator);
-        }
-
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null) return NotFound();
-            var coordinator = await _context.Coordinators.FindAsync(id);
-            if (coordinator == null) return NotFound();
-            return View(coordinator);
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Coordinator coordinator)
-        {
-            if (id != coordinator.CoordinatorId) return NotFound();
-            if (ModelState.IsValid)
-            {
-                try
+                // Create user claims
+              var claims = new List<System.Security.Claims.Claim>
                 {
-                    _context.Update(coordinator);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.Coordinators.Any(e => e.CoordinatorId == id))
-                        return NotFound();
-                    else throw;
-                }
-                return RedirectToAction(nameof(Index));
+                  new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, email),
+                  new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, "Coordinator")
+               };
+
+
+                var identity = new ClaimsIdentity(claims, "CMCSAuth");
+                var principal = new ClaimsPrincipal(identity);
+
+                // Sign in the user
+                await HttpContext.SignInAsync("CMCSAuth", principal);
+
+                return RedirectToAction("CoordDash", "Coordinator");
             }
-            return View(coordinator);
+
+            ViewBag.Error = "Invalid login credentials.";
+            return View();
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        // LOGOUT
+        public IActionResult Logout()
         {
-            if (id == null) return NotFound();
-            var coordinator = await _context.Coordinators.FirstOrDefaultAsync(m => m.CoordinatorId == id);
-            if (coordinator == null) return NotFound();
-            return View(coordinator);
+            TempData["IsCoordinatorLoggedIn"] = false;
+            return RedirectToAction("Login");
         }
 
-        [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        // DASHBOARD
+        public async Task<IActionResult> CoordDash()
         {
-            var coordinator = await _context.Coordinators.FindAsync(id);
-            if (coordinator != null)
-            {
-                _context.Coordinators.Remove(coordinator);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction(nameof(Index));
+            if (TempData["IsCoordinatorLoggedIn"] == null || !(bool)TempData["IsCoordinatorLoggedIn"]!)
+                return RedirectToAction("Login");
+
+            TempData.Keep("IsCoordinatorLoggedIn");
+
+            var claims = await _context.Claims
+            .OrderByDescending(c => c.DateSubmitted)
+            .ToListAsync();
+
+            return View("CoordDash", claims);
+        }
+
+        // APPROVE CLAIM
+        [HttpPost]
+        public async Task<IActionResult> Approve(int id)
+        {
+            var claim = await _context.Claims.FindAsync(id);
+            if (claim == null) return NotFound();
+
+            claim.Status = ClaimStatus.Approved;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CoordDash));
+        }
+
+        // REJECT CLAIM
+        [HttpPost]
+        public async Task<IActionResult> Reject(int id)
+        {
+            var claim = await _context.Claims.FindAsync(id);
+            if (claim == null) return NotFound();
+
+            claim.Status = ClaimStatus.Rejected;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CoordDash));
+        }
+
+        // SET PENDING (ON HOLD)
+        [HttpPost]
+        public async Task<IActionResult> SetPending(int id)
+        {
+            var claim = await _context.Claims.FindAsync(id);
+            if (claim == null) return NotFound();
+
+            claim.Status = ClaimStatus.Pending;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(CoordDash));
         }
     }
 }
-

@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using CMCS_Web_App.Data;
 using CMCS_Web_App.Models;
-using CMCS_Web_App.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CMCS_Web_App.Controllers
 {
+    [Authorize]
     public class ManagerController : Controller
     {
         private readonly AppDbContext _context;
@@ -14,79 +18,91 @@ namespace CMCS_Web_App.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index() =>
-            View(await _context.Managers.ToListAsync());
-
-        public async Task<IActionResult> Details(int? id)
+        // LOGIN (temporary simple login system for POE)
+       
+        [HttpPost]
+        public async Task<IActionResult> Login(string email, string password)
         {
-            if (id == null) return NotFound();
-            var manager = await _context.Managers.FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null) return NotFound();
-            return View(manager);
-        }
-
-        public IActionResult Create() => View();
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Manager manager)
-        {
-            if (ModelState.IsValid)
+            // Simple demo credentials
+            if (email == "Manager@cmcs.com" && password == "12345")
             {
-                _context.Add(manager);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(manager);
-        }
-
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null) return NotFound();
-            var manager = await _context.Managers.FindAsync(id);
-            if (manager == null) return NotFound();
-            return View(manager);
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Manager manager)
-        {
-            if (id != manager.ManagerId) return NotFound();
-            if (ModelState.IsValid)
-            {
-                try
+                // Create user claims
+                var claims = new List<System.Security.Claims.Claim>
                 {
-                    _context.Update(manager);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.Managers.Any(e => e.ManagerId == id))
-                        return NotFound();
-                    else throw;
-                }
-                return RedirectToAction(nameof(Index));
+                  new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, email),
+                  new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, "Manager")
+               };
+
+
+                var identity = new ClaimsIdentity(claims, "CMCSAuth");
+                var principal = new ClaimsPrincipal(identity);
+
+                // Sign in the user
+                await HttpContext.SignInAsync("CMCSAuth", principal);
+
+                return RedirectToAction("ManagerDash", "Manager");
             }
-            return View(manager);
+
+            ViewBag.Error = "Invalid login credentials.";
+            return View();
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        // LOGOUT
+        public IActionResult Logout()
         {
-            if (id == null) return NotFound();
-            var manager = await _context.Managers.FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null) return NotFound();
-            return View(manager);
+            TempData["IsManagerLoggedIn"] = false;
+            return RedirectToAction("Login");
         }
 
-        [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        // DASHBOARD
+        public async Task<IActionResult> ManagerDash()
         {
-            var manager = await _context.Managers.FindAsync(id);
-            if (manager != null)
-            {
-                _context.Managers.Remove(manager);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction(nameof(Index));
+            if (TempData["IsManagerLoggedIn"] == null || !(bool)TempData["IsManagerLoggedIn"]!)
+                return RedirectToAction("Login");
+
+            TempData.Keep("IsManagerLoggedIn");
+
+            var claims = await _context.Claims
+            .OrderByDescending(c => c.DateSubmitted)
+            .ToListAsync();
+
+            return View("ManagerDash", claims);
+        }
+
+        // APPROVE CLAIM
+        [HttpPost]
+        public async Task<IActionResult> Approve(int id)
+        {
+            var claim = await _context.Claims.FindAsync(id);
+            if (claim == null) return NotFound();
+
+            claim.Status = ClaimStatus.Approved;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ManagerDash));
+        }
+
+        // REJECT CLAIM
+        [HttpPost]
+        public async Task<IActionResult> Reject(int id)
+        {
+            var claim = await _context.Claims.FindAsync(id);
+            if (claim == null) return NotFound();
+
+            claim.Status = ClaimStatus.Rejected;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ManagerDash));
+        }
+
+        // SET PENDING (ON HOLD)
+        [HttpPost]
+        public async Task<IActionResult> SetPending(int id)
+        {
+            var claim = await _context.Claims.FindAsync(id);
+            if (claim == null) return NotFound();
+
+            claim.Status = ClaimStatus.Pending;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ManagerDash));
         }
     }
 }
