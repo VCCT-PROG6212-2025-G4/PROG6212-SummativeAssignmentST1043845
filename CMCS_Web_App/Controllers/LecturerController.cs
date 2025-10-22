@@ -16,22 +16,33 @@ public class LecturerController : Controller
         _env = env;
     }
 
-    // GET: Lecturers
+//-----------------------------------------------------------------------------------------------------------------------//
+
+    /// <summary>
+    /// GET: Lecturers
+    /// </summary>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <returns></returns>
     [HttpGet("Lecturer/LecturerDash")]
     public IActionResult LecturerDash(string firstName, string lastName)
     {
-        Console.WriteLine("✅ LecturerDash method triggered");
+        Console.WriteLine(" LecturerDash method triggered");
 
         ViewBag.LecturerName = $"{firstName} {lastName}";
 
-        return View(); // View can use ViewBag or fetch claims by name
+        return View(); 
     }
 
-
-
-    // ===============================
-    // SUBMIT CLAIM (POST)
-    // ===============================
+//-----------------------------------------------------------------------------------------------------------------------------//
+     
+    /// <summary>
+    /// POST:
+    /// </summary>
+    /// <param name="claim"></param>
+    /// <param name="SupportingDocument"></param>
+    /// <returns></returns>
+     
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SubmitClaim(Claim claim, IFormFile? SupportingDocument)
@@ -39,7 +50,7 @@ public class LecturerController : Controller
         if (!ModelState.IsValid)
             return View(claim);
 
-        // Save uploaded file
+        
         if (SupportingDocument != null && SupportingDocument.Length > 0)
         {
             var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
@@ -57,29 +68,41 @@ public class LecturerController : Controller
             claim.SupportingDocumentPath = $"/uploads/{fileName}";
         }
 
-        // Set claim details
+        
         claim.DateSubmitted = DateTime.Now;
         claim.Status = ClaimStatus.Pending;
 
         _context.Claims.Add(claim);
         await _context.SaveChangesAsync();
 
-        // 🔁 Redirect to MyClaims using first and last name
+       
         return RedirectToAction(nameof(MyClaims), new { firstName = claim.FirstName, lastName = claim.LastName });
     }
+
+ //---------------------------------------------------------------------------------------------------------------//
+  
+    /// <summary>
+    /// GET:
+    /// </summary>
+    /// <returns></returns>
 
     [HttpGet]
     public IActionResult SubmitClaim()
     {
-        // If you're no longer using stored lecturers, you don't need to query them
+   
         return View();
     }
 
+ //------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+    /// <summary>
+    /// My Claims View
+    /// </summary>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <returns></returns>
 
 
-    // ===============================
-    // MY CLAIMS (renamed from ViewClaims)
-    // ===============================
     public async Task<IActionResult> MyClaims(string firstName, string lastName)
     {
         var claims = await _context.Claims
@@ -90,7 +113,7 @@ public class LecturerController : Controller
         if (!claims.Any())
         {
             ViewBag.Message = "No claims found for this lecturer.";
-            return View("MyClaims"); // still load the page, just empty
+            return View("MyClaims"); 
         }
 
         ViewBag.LecturerName = $"{firstName} {lastName}";
@@ -99,4 +122,7 @@ public class LecturerController : Controller
 
 
 }
+
+//--------------------------------------------------o-o-o-000-END OF FILE-000-o-o-o-------------------------------------------------------------------------------------------------------------//
+
 

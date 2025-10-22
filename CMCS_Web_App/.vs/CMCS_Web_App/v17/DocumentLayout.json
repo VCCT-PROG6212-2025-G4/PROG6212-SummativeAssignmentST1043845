@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|c:\\users\\kbm\\source\\repos\\cmcs_web_application\\prog6212-part2st1043845\\cmcs_web_app\\controllers\\manager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|solutionrelative:controllers\\manager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|c:\\users\\kbm\\source\\repos\\cmcs_web_application\\prog6212-part2st1043845\\cmcs_web_app\\controllers\\lecturercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|solutionrelative:controllers\\lecturercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|c:\\users\\kbm\\source\\repos\\cmcs_web_application\\prog6212-part2st1043845\\cmcs_web_app\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -23,10 +31,6 @@
       "RelativeMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|solutionrelative:controllers\\reportscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|c:\\users\\kbm\\source\\repos\\cmcs_web_application\\prog6212-part2st1043845\\cmcs_web_app\\controllers\\lecturercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|solutionrelative:controllers\\lecturercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|c:\\users\\kbm\\source\\repos\\cmcs_web_application\\prog6212-part2st1043845\\cmcs_web_app\\models\\lecturer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|solutionrelative:models\\lecturer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -45,10 +49,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|c:\\users\\kbm\\source\\repos\\cmcs_web_application\\prog6212-part2st1043845\\cmcs_web_app\\models\\claims.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|solutionrelative:models\\claims.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|c:\\users\\kbm\\source\\repos\\cmcs_web_application\\prog6212-part2st1043845\\cmcs_web_app\\controllers\\manager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|solutionrelative:controllers\\manager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0461FDB9-6F3A-4D5D-B8F9-4096C6A5BC5F}|CMCS_Web_App.csproj|c:\\users\\kbm\\source\\repos\\cmcs_web_application\\prog6212-part2st1043845\\cmcs_web_app\\controllers\\dashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -176,7 +176,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 35,
           "Children": [
             {
               "$type": "Bookmark",
@@ -216,13 +216,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
               "ToolTip": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Controllers\\HomeController.cs",
               "RelativeToolTip": "Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAqwGQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-22T00:51:26.202Z",
               "EditorCaption": ""
@@ -277,7 +277,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Views\\Reports\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Reports\\Index.cshtml",
@@ -301,7 +301,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "ReportsController.cs",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Controllers\\ReportsController.cs",
               "RelativeDocumentMoniker": "Controllers\\ReportsController.cs",
@@ -395,7 +395,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "LecturerDash.cshtml",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Views\\Lecturer\\LecturerDash.cshtml",
               "RelativeDocumentMoniker": "Views\\Lecturer\\LecturerDash.cshtml",
@@ -407,7 +407,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "MyClaims.cshtml",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Views\\Lecturer\\MyClaims.cshtml",
               "RelativeDocumentMoniker": "Views\\Lecturer\\MyClaims.cshtml",
@@ -527,7 +527,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -575,19 +575,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 0,
               "Title": "Manager.cs",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Controllers\\Manager.cs",
               "RelativeDocumentMoniker": "Controllers\\Manager.cs",
               "ToolTip": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Controllers\\Manager.cs",
               "RelativeToolTip": "Controllers\\Manager.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAqwAoAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-16T19:24:39.07Z"
+              "WhenOpened": "2025-09-16T19:24:39.07Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Coordinator.cs",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Controllers\\Coordinator.cs",
               "RelativeDocumentMoniker": "Controllers\\Coordinator.cs",
@@ -595,12 +596,11 @@
               "RelativeToolTip": "Controllers\\Coordinator.cs",
               "ViewState": "AgIAAD8AAAAAAAAAAAAowGEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-16T19:24:16.028Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-16T19:24:16.028Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Claims.cs",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Controllers\\Claims.cs",
               "RelativeDocumentMoniker": "Controllers\\Claims.cs",
@@ -612,19 +612,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "LecturerController.cs",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Controllers\\LecturerController.cs",
               "RelativeDocumentMoniker": "Controllers\\LecturerController.cs",
               "ToolTip": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Controllers\\LecturerController.cs",
               "RelativeToolTip": "Controllers\\LecturerController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAcwH4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-16T19:23:20.362Z"
+              "WhenOpened": "2025-09-16T19:23:20.362Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Claims.cs",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Models\\Claims.cs",
               "RelativeDocumentMoniker": "Models\\Claims.cs",
@@ -660,7 +661,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Lecturer.cs",
               "DocumentMoniker": "C:\\Users\\KBM\\source\\repos\\CMCS_Web_Application\\PROG6212-PART2ST1043845\\CMCS_Web_App\\Models\\Lecturer.cs",
               "RelativeDocumentMoniker": "Models\\Lecturer.cs",

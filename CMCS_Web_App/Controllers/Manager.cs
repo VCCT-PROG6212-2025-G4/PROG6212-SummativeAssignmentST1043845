@@ -18,9 +18,13 @@ namespace CMCS_Web_App.Controllers
             _context = context;
         }
 
-       
 
-        // DASHBOARD
+ //--------------------------------------------------------------------------------------------------------------------------------//
+
+        /// <summary>
+        /// Manager DASHBOARD
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> ManagerDash()
         {
             if (TempData["IsManagerLoggedIn"] == null || !(bool)TempData["IsManagerLoggedIn"]!)
