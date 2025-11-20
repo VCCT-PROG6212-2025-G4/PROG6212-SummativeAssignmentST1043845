@@ -1,0 +1,76 @@
+﻿@model CMCS_Web_App.Controllers.LoginVM
+@{
+    Layout = null;   // Login page should not use dashboards or sidebars
+    ViewData["Title"] = "Login";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CMCS</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-100">
+
+    <div class="min-h-screen flex items-center justify-center px-4">
+        <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-lg">
+
+            <!-- Title -->
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">
+                CMCS Login
+            </h2>
+
+            <!-- Error message -->
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    @ViewBag.Error
+                </div>
+            }
+
+            <!-- Form -->
+            <form asp-action="Login" method="post">
+                @Html.AntiForgeryToken()
+
+                <!-- Email -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-1">Email</label>
+                    <input asp-for="Email"
+                           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-gray-800"
+                           placeholder="Enter your email"
+                           required />
+                    <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-1">Password</label>
+                    <input asp-for="Password"
+                           type="password"
+                           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-gray-800"
+                           placeholder="Enter your password"
+                           required />
+                    <span asp-validation-for="Password" class="text-red-600 text-sm"></span>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit"
+                        class="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-700 transition duration-150 font-semibold">
+                    Login
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <p class="text-center text-gray-500 text-sm mt-6">
+                CMCS Claims Management System
+            </p>
+
+        </div>
+    </div>
+
+</body>
+</html>
+

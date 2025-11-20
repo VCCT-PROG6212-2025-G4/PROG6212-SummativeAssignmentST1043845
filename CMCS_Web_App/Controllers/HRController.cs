@@ -33,6 +33,11 @@ namespace CMCS_Web_App.Controllers
             return View("HRDash");
         }
 
+        private bool IsHR()
+        {
+            return HttpContext.Session.GetString("Role") == "HR";
+        }
+
 
         // =============================
         // 1. VIEW ALL LECTURERS

@@ -19,7 +19,7 @@ namespace CMCS_Web_App.Controllers
         }
 
 
- //--------------------------------------------------------------------------------------------------------------------------------//
+        //--------------------------------------------------------------------------------------------------------------------------------//
 
         /// <summary>
         /// Manager dash login
@@ -27,19 +27,20 @@ namespace CMCS_Web_App.Controllers
         /// <returns></returns>
         public async Task<IActionResult> ManagerDash()
         {
-            if (TempData["IsManagerLoggedIn"] == null || !(bool)TempData["IsManagerLoggedIn"]!)
-                return RedirectToAction("Login");
+            // SESSION-BASED ROLE CHECK (MANDATORY)
+            if (HttpContext.Session.GetString("Role") != "Manager")
+                return RedirectToAction("AccessDenied", "Home");
 
-            TempData.Keep("IsManagerLoggedIn");
-
+            // Load claims
             var claims = await _context.Claims
-            .OrderByDescending(c => c.DateSubmitted)
-            .ToListAsync();
+                .OrderByDescending(c => c.DateSubmitted)
+                .ToListAsync();
 
             return View("ManagerDash", claims);
         }
 
- //---------------------------------------------------------------------------------------------------------------------------------------------//
+
+        //---------------------------------------------------------------------------------------------------------------------------------------------//
 
         /// <summary>
         /// Approve claim logic for manager , to approve a claim

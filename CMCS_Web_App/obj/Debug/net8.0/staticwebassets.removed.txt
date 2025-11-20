@@ -1,0 +1,3 @@
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App\wwwroot\css\site.css
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App\wwwroot\favicon.ico
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App\wwwroot\js\site.js

@@ -16,7 +16,7 @@ public class LecturerController : Controller
         _env = env;
     }
 
-//-----------------------------------------------------------------------------------------------------------------------//
+    //-----------------------------------------------------------------------------------------------------------------------//
 
     /// <summary>
     /// GET: Lecturers
@@ -25,24 +25,29 @@ public class LecturerController : Controller
     /// <param name="lastName"></param>
     /// <returns></returns>
     [HttpGet("Lecturer/LecturerDash")]
-    public IActionResult LecturerDash(string firstName, string lastName)
+    public IActionResult LecturerDash()
     {
-        Console.WriteLine(" LecturerDash method triggered");
+        // Role protection
+        if (HttpContext.Session.GetString("Role") != "Lecturer")
+            return RedirectToAction("AccessDenied", "Home");
 
-        ViewBag.LecturerName = $"{firstName} {lastName}";
+        Console.WriteLine("LecturerDash method triggered");
 
-        return View(); 
+        // Get name from session
+        ViewBag.LecturerName = HttpContext.Session.GetString("UserName");
+
+        return View();
     }
 
-//-----------------------------------------------------------------------------------------------------------------------------//
-     
+    //-----------------------------------------------------------------------------------------------------------------------------//
+
     /// <summary>
     /// POST:
     /// </summary>
     /// <param name="claim"></param>
     /// <param name="SupportingDocument"></param>
     /// <returns></returns>
-     
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SubmitClaim(Claim claim, IFormFile? SupportingDocument)

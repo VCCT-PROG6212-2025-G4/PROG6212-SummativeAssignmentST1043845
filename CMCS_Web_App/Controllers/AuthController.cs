@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using static CMCS_Web_App.Data.AppDbContext;
 
 namespace CMCS_Web_App.Controllers
 {

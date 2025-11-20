@@ -19,27 +19,28 @@ namespace CMCS_Web_App.Controllers
             _context = context;
         }
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------//
-      /// <summary>
-      /// Logic managing login for coordinators
-      ///  Co-ordinator Dash login method
-      /// </summary> 
-     
+        //--------------------------------------------------------------------------------------------------------------------------------------------------//
+        /// <summary>
+        /// Logic managing login for coordinators
+        ///  Co-ordinator Dash login method
+        /// </summary> 
+
         public async Task<IActionResult> CoordDash()
         {
-            if (TempData["IsCoordinatorLoggedIn"] == null || !(bool)TempData["IsCoordinatorLoggedIn"]!)
-                return RedirectToAction("Login");
+            // Session-based authentication (required for new login system)
+            if (HttpContext.Session.GetString("Role") != "Coordinator")
+                return RedirectToAction("AccessDenied", "Home");
 
-            TempData.Keep("IsCoordinatorLoggedIn");
-
+            // Load all claims
             var claims = await _context.Claims
-            .OrderByDescending(c => c.DateSubmitted)
-            .ToListAsync();
+                .OrderByDescending(c => c.DateSubmitted)
+                .ToListAsync();
 
             return View("CoordDash", claims);
         }
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+        //------------------------------------------------------------------------------------------------------------------------------------------------------//
 
         /// <summary>
         /// Approve claim logic
