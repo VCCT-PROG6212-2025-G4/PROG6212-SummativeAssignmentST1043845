@@ -34,10 +34,16 @@
                     </a>
                 </li>
                 <li>
-                    <a asp-controller="Home" asp-action="Index" class="hover:text-yellow-400 transition">
-                        <i class="mdi mdi-logout mr-1"></i> Logout
-                    </a>
+                <li>
+                    <form asp-controller="Auth" asp-action="Logout" method="post" class="inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="hover:text-yellow-400 transition flex items-center">
+                            <i class="mdi mdi-logout mr-1"></i> Logout
+                        </button>
+                    </form>
                 </li>
+
+               
             </ul>
         </nav>
     </header>

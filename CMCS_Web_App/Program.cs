@@ -42,9 +42,8 @@ namespace CMCS_Web_App
             // Enable session middleware
             app.UseSession();
 
-            // No authentication/authorization needed
-            // app.UseAuthentication();
-            // app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

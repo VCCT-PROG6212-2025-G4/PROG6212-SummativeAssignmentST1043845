@@ -1,0 +1,75 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CMCS</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@@mdi/font/css/materialdesignicons.min.css" rel="stylesheet" />
+
+    <style>
+        .nav-active {
+            color:#facc15;
+            border-bottom: 2px solid #facc15;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex flex-col min-h-screen">
+    <header class="bg-gray-900 text-white shadow-md">
+        <nav class="container mx-auto flex flex-wrap justify-between items-center px-4 py-3">
+            <a asp-controller="HR" asp-action="HRDash" class="text-2xl font-semibold tracking-wide hover:text-yellow-400 transition">
+                <i class="mdi mdi-account-tie text-yellow-400 mr-1"></i> CMCS
+            </a>
+            <ul class="flex flex-wrap items-center gap-6 text-sm md:text-base">
+                <li>
+                    <a asp-controller="Home" asp-action="Index" class="hover:text-yellow-400 transition">
+                        <i class="mdi mdi-home-outline mr-1"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="HR" asp-action="HRDash" class="hover:text-yellow-400 transition">
+                        <i class="mdi mdi-view-dashboard-outline mr-1"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <form asp-controller="Auth" asp-action="Logout" method="post" class="inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="hover:text-yellow-400 transition flex items-center">
+                            <i class="mdi mdi-logout mr-1"></i> Logout
+                        </button>
+                    </form>
+                </li>
+
+               
+            </ul>
+        </nav>
+    </header>
+
+    <div class="text-center mt-8">
+        <pre class="text-yellow-400 text-sm md:text-base font-mono whitespace-pre leading-tight">
+  _   _ ____    ____            _     
+ | | | |  _ \  |  _ \ ___  __ _| |__  
+ | |_| | | | | | |_) / _ \/ _` | '_ \ 
+ |  _  | |_| | |  _ <  __/ (_| | | | |
+ |_| |_|____/  |_| \_\___|\__,_|_| |_| 
+        </pre>
+
+        <h1 class="text-3xl font-bold text-gray-800">Welcome HR</h1>
+    </div>
+
+    <main class="container mx-auto px-4 mt-6 flex-grow">
+        @RenderBody()
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 text-center py-3 mt-8">
+        © @DateTime.Now.Year - CMCS Web App
+    </footer>
+</body>
+</html>
+

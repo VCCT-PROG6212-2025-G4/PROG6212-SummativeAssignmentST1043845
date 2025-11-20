@@ -23,6 +23,12 @@ namespace CMCS_Web_App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateApproved")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("DateSubmitted")
                         .HasColumnType("TEXT");
 
@@ -42,7 +48,7 @@ namespace CMCS_Web_App.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("LecturerId")
+                    b.Property<int>("LecturerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Notes")
@@ -81,6 +87,35 @@ namespace CMCS_Web_App.Migrations
                     b.ToTable("Coordinators");
                 });
 
+            modelBuilder.Entity("CMCS_Web_App.Models.HR", b =>
+                {
+                    b.Property<int>("HRId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("HRId");
+
+                    b.ToTable("HR");
+                });
+
             modelBuilder.Entity("CMCS_Web_App.Models.Lecturer", b =>
                 {
                     b.Property<int>("LecturerId")
@@ -99,6 +134,9 @@ namespace CMCS_Web_App.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("HRId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -107,6 +145,8 @@ namespace CMCS_Web_App.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("LecturerId");
+
+                    b.HasIndex("HRId");
 
                     b.ToTable("Lecturers");
                 });
@@ -131,11 +171,116 @@ namespace CMCS_Web_App.Migrations
                     b.ToTable("Managers");
                 });
 
+            modelBuilder.Entity("CMCS_Web_App.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "Lofentse13@CMCSLEC.com",
+                            FirstName = "Lofentse",
+                            LastName = "Moagi",
+                            PasswordHash = "BD5CE2FCF52FD92709E65388151D63CEFC65B75F0BBC7DCC8D401764BDFAE427",
+                            Role = "Lecturer"
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Email = "Karabo28@CMCSLEC.com",
+                            FirstName = "Karabo",
+                            LastName = "Kgoebane",
+                            PasswordHash = "B7E307660E1611CB42BCB28E4BB4A6465CCB5EC2E028CA4BE8B84E8787929A38",
+                            Role = "Lecturer"
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            Email = "Claudia06@CMCSLEC.com",
+                            FirstName = "Claudia",
+                            LastName = "Brander",
+                            PasswordHash = "2FB451F9569989E892CED96048464D6739285A0A5FE00A1A12C47E9D3AF93762",
+                            Role = "Lecturer"
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            Email = "Co-ordinator@CoordCMCS.com",
+                            FirstName = "Steph",
+                            LastName = "Curry",
+                            PasswordHash = "FD7D77DE225B32549F1F537D378526AD307F575C5B6D66370A50C80CF54E081A",
+                            Role = "Coordinator"
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            Email = "Manager@ManCMCS.com",
+                            FirstName = "Ethan",
+                            LastName = "Hunt",
+                            PasswordHash = "8C454536B6E2B8B29A1D839AA3C5CCF0AB57A590D619739B23A32D11585220C9",
+                            Role = "Manager"
+                        },
+                        new
+                        {
+                            UserId = 6,
+                            Email = "HR@ResourcesCMCS.com",
+                            FirstName = "Shrek",
+                            LastName = "Fiona",
+                            PasswordHash = "93759AF6F455B1610E615483CF5EA847B0B7248055C16BE328C9F292D8695A9C",
+                            Role = "HR"
+                        });
+                });
+
             modelBuilder.Entity("CMCS_Web_App.Models.Claim", b =>
                 {
-                    b.HasOne("CMCS_Web_App.Models.Lecturer", null)
+                    b.HasOne("CMCS_Web_App.Models.Lecturer", "Lecturer")
                         .WithMany("Claims")
-                        .HasForeignKey("LecturerId");
+                        .HasForeignKey("LecturerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lecturer");
+                });
+
+            modelBuilder.Entity("CMCS_Web_App.Models.Lecturer", b =>
+                {
+                    b.HasOne("CMCS_Web_App.Models.HR", null)
+                        .WithMany("ManagedLecturers")
+                        .HasForeignKey("HRId");
+                });
+
+            modelBuilder.Entity("CMCS_Web_App.Models.HR", b =>
+                {
+                    b.Navigation("ManagedLecturers");
                 });
 
             modelBuilder.Entity("CMCS_Web_App.Models.Lecturer", b =>

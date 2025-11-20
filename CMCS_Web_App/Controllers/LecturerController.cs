@@ -27,9 +27,20 @@ public class LecturerController : Controller
     [HttpGet("Lecturer/LecturerDash")]
     public IActionResult LecturerDash()
     {
-        // Role protection
-        if (HttpContext.Session.GetString("Role") != "Lecturer")
-            return RedirectToAction("AccessDenied", "Home");
+        var userId = HttpContext.Session.GetString("UserId");
+        var role = HttpContext.Session.GetString("Role");
+
+        // Check if user is logged in
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role))
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+
+        // Check if user is authorized as Lecturer
+        if (role != "Lecturer")
+        {
+            return RedirectToAction("AccessDenied", "Auth");
+        }
 
         Console.WriteLine("LecturerDash method triggered");
 
@@ -38,6 +49,7 @@ public class LecturerController : Controller
 
         return View();
     }
+
 
     //-----------------------------------------------------------------------------------------------------------------------------//
 

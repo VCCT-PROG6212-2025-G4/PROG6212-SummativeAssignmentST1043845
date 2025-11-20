@@ -1,6 +1,6 @@
-﻿@model CMCS_Web_App.Controllers.LoginVM
+﻿@model CMCS_Web_App.Models.LoginVM
 @{
-    Layout = null;   // Login page should not use dashboards or sidebars
+    Layout = null; // Login page should not use dashboards or sidebars
     ViewData["Title"] = "Login";
 }
 
@@ -23,36 +23,29 @@
                 CMCS Login
             </h2>
 
-            <!-- Error message -->
-            @if (!string.IsNullOrEmpty(ViewBag.Error))
-            {
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                    @ViewBag.Error
-                </div>
-            }
+            <!-- Validation Summary -->
+            @Html.ValidationSummary(true, "", new { @class = "text-red-600 text-sm mb-4" })
 
             <!-- Form -->
-            <form asp-action="Login" method="post">
+            <form asp-action="Login" asp-controller="Auth" method="post">
                 @Html.AntiForgeryToken()
 
                 <!-- Email -->
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-semibold mb-1">Email</label>
+                    <label asp-for="Email" class="block text-gray-700 font-semibold mb-1">Email</label>
                     <input asp-for="Email"
                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-gray-800"
-                           placeholder="Enter your email"
-                           required />
+                           placeholder="Enter your email" />
                     <span asp-validation-for="Email" class="text-red-600 text-sm"></span>
                 </div>
 
                 <!-- Password -->
                 <div class="mb-6">
-                    <label class="block text-gray-700 font-semibold mb-1">Password</label>
+                    <label asp-for="Password" class="block text-gray-700 font-semibold mb-1">Password</label>
                     <input asp-for="Password"
                            type="password"
                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-gray-800"
-                           placeholder="Enter your password"
-                           required />
+                           placeholder="Enter your password" />
                     <span asp-validation-for="Password" class="text-red-600 text-sm"></span>
                 </div>
 
@@ -71,6 +64,10 @@
         </div>
     </div>
 
+    <!-- Validation Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
 </body>
 </html>
-

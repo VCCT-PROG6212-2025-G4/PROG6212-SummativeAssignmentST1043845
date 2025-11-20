@@ -20,6 +20,9 @@ namespace CMCS_Web_App.Controllers
         // ===============================
         // LOGIN PAGE (GET)
         // ===============================
+
+        [HttpGet("")]
+
         [HttpGet("Login")]
         public IActionResult Login()
         {
@@ -86,21 +89,17 @@ namespace CMCS_Web_App.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Login");
-        }
-    }
+            return RedirectToAction("Login", "Auth");
+       }
 
 
-    // ===============================
-    // LOGIN VIEW MODEL
-    // ===============================
-    public class LoginVM
-    {
-        [Required, EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        [HttpGet("AccessDenied")]
+        public IActionResult AccessDenied()
+        {
+            return View();
+       }
 
-        [Required, DataType(DataType.Password)]
-        public string Password { get; set; } = string.Empty;
+      
     }
 }
     

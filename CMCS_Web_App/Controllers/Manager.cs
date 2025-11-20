@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace CMCS_Web_App.Controllers
 {
-    [Authorize(Roles = "Manager")]
+    
     public class ManagerController : Controller
     {
         private readonly AppDbContext _context;
@@ -27,9 +27,20 @@ namespace CMCS_Web_App.Controllers
         /// <returns></returns>
         public async Task<IActionResult> ManagerDash()
         {
-            // SESSION-BASED ROLE CHECK (MANDATORY)
-            if (HttpContext.Session.GetString("Role") != "Manager")
-                return RedirectToAction("AccessDenied", "Home");
+            var userId = HttpContext.Session.GetString("UserId");
+            var role = HttpContext.Session.GetString("Role");
+
+            // Check if user is logged in
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            // Check if user is authorized as Manager
+            if (role != "Manager")
+            {
+                return RedirectToAction("AccessDenied", "Auth");
+            }
 
             // Load claims
             var claims = await _context.Claims
@@ -38,6 +49,7 @@ namespace CMCS_Web_App.Controllers
 
             return View("ManagerDash", claims);
         }
+
 
 
         //---------------------------------------------------------------------------------------------------------------------------------------------//

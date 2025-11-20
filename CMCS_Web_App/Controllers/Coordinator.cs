@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace CMCS_Web_App.Controllers
 {
-    [Authorize(Roles = "Coordinator")]
+    
     public class CoordinatorController : Controller
     {
         private readonly AppDbContext _context;
@@ -23,15 +23,29 @@ namespace CMCS_Web_App.Controllers
         /// <summary>
         /// Logic managing login for coordinators
         ///  Co-ordinator Dash login method
+        ///  Updateded to include session-based role check
         /// </summary> 
 
+        [HttpGet("Coordinator/CoordinatorDash")]
         public async Task<IActionResult> CoordDash()
         {
-            // Session-based authentication (required for new login system)
-            if (HttpContext.Session.GetString("Role") != "Coordinator")
-                return RedirectToAction("AccessDenied", "Home");
+            // Check if user is logged in
+            var userId = HttpContext.Session.GetString("UserId");
+            var role = HttpContext.Session.GetString("Role");
 
-            // Load all claims
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role))
+            {
+                // Session expired or user not logged in
+                return RedirectToAction("Login", "Auth");
+            }
+
+            if (role != "Coordinator")
+            {
+                // Logged in but not authorized for this page
+                return RedirectToAction("AccessDenied", "Auth");
+            }
+
+            // Load all claims for coordinator view
             var claims = await _context.Claims
                 .OrderByDescending(c => c.DateSubmitted)
                 .ToListAsync();

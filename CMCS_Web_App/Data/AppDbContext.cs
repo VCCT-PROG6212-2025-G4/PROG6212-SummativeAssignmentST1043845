@@ -44,29 +44,29 @@ namespace CMCS_Web_App.Data
                 new User
                 {
                     UserId = 1,
-                    Email = "lecturer1@test.com",
-                    FirstName = "Alice",
-                    LastName = "Moyo",
+                    Email = "Lofentse13@CMCSLEC.com",
+                    FirstName = "Lofentse",
+                    LastName = "Moagi",
                     Role = "Lecturer",
-                    PasswordHash = PasswordHasher.Hash("password123")
+                    PasswordHash = PasswordHasher.Hash("0628")
                 },
                 new User
                 {
                     UserId = 2,
-                    Email = "lecturer2@test.com",
-                    FirstName = "Brian",
-                    LastName = "Zulu",
+                    Email = "Karabo28@CMCSLEC.com",
+                    FirstName = "Karabo",
+                    LastName = "Kgoebane",
                     Role = "Lecturer",
-                    PasswordHash = PasswordHasher.Hash("password123")
+                    PasswordHash = PasswordHasher.Hash("1113")
                 },
                 new User
                 {
                     UserId = 3,
-                    Email = "lecturer3@test.com",
-                    FirstName = "Cindy",
-                    LastName = "Nkosi",
+                    Email = "Claudia06@CMCSLEC.com",
+                    FirstName = "Claudia",
+                    LastName = "Brander",
                     Role = "Lecturer",
-                    PasswordHash = PasswordHasher.Hash("password123")
+                    PasswordHash = PasswordHasher.Hash("0731")
                 },
 
                 // -----------------------------
@@ -75,11 +75,11 @@ namespace CMCS_Web_App.Data
                 new User
                 {
                     UserId = 4,
-                    Email = "coordinator@test.com",
-                    FirstName = "David",
-                    LastName = "Maseko",
+                    Email = "Co-ordinator@CoordCMCS.com",
+                    FirstName = "Steph",
+                    LastName = "Curry",
                     Role = "Coordinator",
-                    PasswordHash = PasswordHasher.Hash("password123")
+                    PasswordHash = PasswordHasher.Hash("4639")
                 },
 
                 // -----------------------------
@@ -88,11 +88,11 @@ namespace CMCS_Web_App.Data
                 new User
                 {
                     UserId = 5,
-                    Email = "manager@test.com",
+                    Email = "Manager@ManCMCS.com",
                     FirstName = "Ethan",
-                    LastName = "Smith",
+                    LastName = "Hunt",
                     Role = "Manager",
-                    PasswordHash = PasswordHasher.Hash("password123")
+                    PasswordHash = PasswordHasher.Hash("1243")
                 },
 
                 // -----------------------------
@@ -101,11 +101,11 @@ namespace CMCS_Web_App.Data
                 new User
                 {
                     UserId = 6,
-                    Email = "hr@test.com",
-                    FirstName = "Fiona",
-                    LastName = "Muller",
+                    Email = "HR@ResourcesCMCS.com",
+                    FirstName = "Shrek",
+                    LastName = "Fiona",
                     Role = "HR",
-                    PasswordHash = PasswordHasher.Hash("password123")
+                    PasswordHash = PasswordHasher.Hash("0432")
                 }
             );
         }

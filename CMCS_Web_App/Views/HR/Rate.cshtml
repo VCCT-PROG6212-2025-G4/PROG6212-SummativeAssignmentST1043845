@@ -1,5 +1,10 @@
 ﻿@model CMCS_Web_App.Models.Lecturer
 
+
+@{
+    Layout = "~/Views/Shared/_HRLayout.cshtml";
+    ViewData["Title"] = "Rate";
+}
 <h2>Edit Hourly Rate</h2>
 
 <form asp-action="EditRate" method="post">

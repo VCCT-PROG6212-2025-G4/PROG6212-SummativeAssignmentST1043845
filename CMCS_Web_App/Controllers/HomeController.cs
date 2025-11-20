@@ -15,6 +15,12 @@ namespace CMCS_Web_App.Controllers
             _logger = logger;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+
     }
 }
 //----------------------------------o-o-o-000-END OF FILE-000-o-o-o-------------------------------------------------------------------------------------------------------------//

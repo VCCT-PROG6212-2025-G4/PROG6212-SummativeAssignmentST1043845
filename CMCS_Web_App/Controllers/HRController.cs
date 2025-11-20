@@ -15,49 +15,66 @@ namespace CMCS_Web_App.Controllers
         {
             _context = context;
         }
-        //  Role protection using Session (NO Identity)
+        // =============================
+        // Helper: Check if user is logged in and is HR
+        // =============================
+        private bool IsHR()
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            var role = HttpContext.Session.GetString("Role");
+
+            return !string.IsNullOrEmpty(userId) && role == "HR";
+        }
+
+        // =============================
+        // HR Dashboard
+        // =============================
         [HttpGet("HR/HRDash")]
         public IActionResult HRDash()
         {
             Console.WriteLine("HRDash method triggered");
 
-            // Session role validation
-            if (HttpContext.Session.GetString("Role") != "HR")
+            if (!IsHR())
             {
-                return RedirectToAction("AccessDenied", "Home");
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                    return RedirectToAction("Login", "Auth");
+
+                return RedirectToAction("AccessDenied", "Auth");
             }
 
-            // Optional: HR Name display
             ViewBag.HRName = HttpContext.Session.GetString("UserName");
-
             return View("HRDash");
         }
 
-        private bool IsHR()
-        {
-            return HttpContext.Session.GetString("Role") == "HR";
-        }
-
-
         // =============================
-        // 1. VIEW ALL LECTURERS
+        // 1. View All Lecturers
         // =============================
         public IActionResult LecturersManager()
         {
             if (!IsHR())
-                return RedirectToAction("AccessDenied", "Home");
+            {
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                    return RedirectToAction("Login", "Auth");
+
+                return RedirectToAction("AccessDenied", "Auth");
+            }
 
             var lecturers = _context.Lecturers.ToList();
             return View(lecturers);
         }
 
         // =============================
-        // 2. EDIT HOURLY RATE (GET)
+        // 2. Edit Hourly Rate (GET)
         // =============================
         public IActionResult Rate(int id)
         {
             if (!IsHR())
-                return RedirectToAction("AccessDenied", "Home");
+            {
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                    return RedirectToAction("Login", "Auth");
+
+                return RedirectToAction("AccessDenied", "Auth");
+            }
 
             var lecturer = _context.Lecturers.Find(id);
             if (lecturer == null)
@@ -67,33 +84,42 @@ namespace CMCS_Web_App.Controllers
         }
 
         // =============================
-        // 3. EDIT HOURLY RATE (POST)
+        // 3. Edit Hourly Rate (POST)
         // =============================
         [HttpPost]
         public IActionResult Rate(int id, decimal ratePerHour)
         {
             if (!IsHR())
-                return RedirectToAction("AccessDenied", "Home");
+            {
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                    return RedirectToAction("Login", "Auth");
+
+                return RedirectToAction("AccessDenied", "Auth");
+            }
 
             var lecturer = _context.Lecturers.Find(id);
             if (lecturer == null)
                 return NotFound();
 
             lecturer.RatePerHour = ratePerHour;
-
             _context.SaveChanges();
 
             TempData["Success"] = "Hourly rate updated successfully.";
-            return RedirectToAction("ManageLecturers");
+            return RedirectToAction("LecturersManager");
         }
 
         // =============================
-        // 4. VIEW APPROVED CLAIMS
+        // 4. View Approved Claims
         // =============================
         public IActionResult ApprovedClaims()
         {
             if (!IsHR())
-                return RedirectToAction("AccessDenied", "Home");
+            {
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                    return RedirectToAction("Login", "Auth");
+
+                return RedirectToAction("AccessDenied", "Auth");
+            }
 
             var claims = _context.Claims
                 .Include(c => c.Lecturer)
@@ -105,5 +131,3 @@ namespace CMCS_Web_App.Controllers
         }
     }
 }
-    
-
