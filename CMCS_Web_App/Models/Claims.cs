@@ -15,10 +15,10 @@ namespace CMCS_Web_App.Models
     {
         public int ClaimId { get; set; }
 
-        //[Required]
-        //public int LecturerId { get; set; }
+        [Required] //(Need to create a lecture table first for lecture login )
+        public int LecturerId { get; set; }
 
-        //public required Lecturer Lecturer { get; set; } // Navigation property
+        public required Lecturer Lecturer { get; set; } // Navigation property
 
         [Required]
         [StringLength(50)]
@@ -31,13 +31,17 @@ namespace CMCS_Web_App.Models
         [Range(0, 500)]
         public int HoursWorked { get; set; }
 
-        [Required]
-        [Range(0, 1000)]
+        // HR-controlled value. DO NOT show in Lecturer form.
         public decimal HourlyRate { get; set; }
 
-        public required string? Notes { get; set; }
+        public string? ApprovedBy { get; set; }
+        public DateTime? DateApproved { get; set; }
 
+
+        // Auto-calculated
         public decimal TotalAmount => HoursWorked * HourlyRate;
+
+        public string? Notes { get; set; }
 
         public ClaimStatus Status { get; set; } = ClaimStatus.Pending;
 

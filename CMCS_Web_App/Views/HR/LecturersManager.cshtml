@@ -1,0 +1,28 @@
+﻿@model IEnumerable<CMCS_Web_App.Models.Lecturer>
+
+<h2>Manage Lecturer Rates</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Current Rate</th>
+            <th>Set Rate</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var lec in Model)
+        {
+            <tr>
+                <td>@lec.FirstName @lec.LastName</td>
+                <td>@lec.Department</td>
+                <td>R @lec.RatePerHour</td>
+                <td>
+                    <a class="btn btn-warning" href="/HR/EditRate/@lec.LecturerId">Edit Rate</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,31 @@
+﻿@model IEnumerable<CMCS_Web_App.Models.Claim>
+
+<h2>Approved Claims</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Lecturer</th>
+            <th>Hours Worked</th>
+            <th>Rate</th>
+            <th>Total Amount</th>
+            <th>Approved By</th>
+            <th>Date Approved</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.Lecturer.FirstName @claim.Lecturer.LastName</td>
+                <td>@claim.HoursWorked</td>
+                <td>R @claim.HourlyRate</td>
+                <td><strong>R @claim.TotalAmount</strong></td>
+                <td>@claim.ApprovedBy</td>
+                <td>@claim.DateApproved?.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
