@@ -1,6 +1,7 @@
 ﻿using CMCS_Web_App.Data;
 using CMCS_Web_App.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 using static CMCS_Web_App.Data.AppDbContext;
 
@@ -15,6 +16,32 @@ namespace CMCS_Web_App.Controllers
         {
             _context = context;
         }
+
+        [HttpGet("HR/HRDash")]
+        public IActionResult HRDash()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var role = HttpContext.Session.GetString("Role");
+
+            // Not logged in
+            if (userId == null || string.IsNullOrEmpty(role))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            // Wrong role
+            if (role != "HR")
+            {
+                return RedirectToAction("AccessDenied", "Auth");
+            }
+
+            // Optional: show name on UI
+            ViewBag.HRName = HttpContext.Session.GetString("UserName");
+
+            return View();
+        }
+
+
 
         private bool IsHR()
         {
@@ -80,30 +107,41 @@ namespace CMCS_Web_App.Controllers
             if (!IsHR())
                 return RedirectToAction("AccessDenied", "Auth");
 
-            return View();
+            return View(new CreateUserVM());
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser(User user)
+        public async Task<IActionResult> CreateUser(CreateUserVM vm)
         {
             if (!IsHR())
                 return RedirectToAction("AccessDenied", "Auth");
 
             if (!ModelState.IsValid)
-                return View(user);
+                return View(vm);
 
-            // Save user
+            string hashedPassword = PasswordHasher.Hash(vm.Password);
+
+            // Create User entity
+            var user = new User
+            {
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                Email = vm.Email,
+                Role = vm.Role,
+                PasswordHash = hashedPassword
+            };
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            // Auto-generate a matching Lecturer if needed
-            if (user.Role == "Lecturer")
+            // Auto-create Lecturer if needed
+            if (vm.Role == "Lecturer")
             {
                 var lecturer = new Lecturer
                 {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
+                    FirstName = vm.FirstName,
+                    LastName = vm.LastName,
+                    Email = vm.Email,
                     Department = "Unassigned",
                     RatePerHour = 0
                 };

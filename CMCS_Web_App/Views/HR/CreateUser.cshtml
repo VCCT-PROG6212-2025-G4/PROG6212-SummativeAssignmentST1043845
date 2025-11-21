@@ -1,4 +1,4 @@
-﻿@model CMCS_Web_App.Models.User
+﻿@model CreateUserVM
 @{
     ViewData["Title"] = "Create User";
     Layout = "~/Views/Shared/_HRLayout.cshtml";
@@ -37,12 +37,12 @@
             <span asp-validation-for="Email" class="text-red-600"></span>
         </div>
 
-        @* <div>
+        <div>
             <label class="block text-gray-700 font-medium mb-1">Password</label>
             <input asp-for="Password"
                    class="w-full p-2 border rounded-lg" type="password" />
             <span asp-validation-for="Password" class="text-red-600"></span>
-        </div> *@
+        </div>
 
         <div>
             <label class="block text-gray-700 font-medium mb-1">Role</label>
