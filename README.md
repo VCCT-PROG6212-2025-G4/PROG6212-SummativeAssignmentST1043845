@@ -113,9 +113,38 @@ CMCS_Web_App/
 ---
 
 ## Login details 
-- Co-ordinator@cmcs.com" && password == "67890
-- Manager@cmcs.com" && password == "12345
+- UserId = 1,
+   Email = "Lofentse13@CMCSLEC.com",
+   Password-0628
+- UserId = 2,                   
+   Email = "Karabo28@CMCSLEC.com",                
+     Password-1113                
+-  UserId = 3,
+   Email = "Claudia06@CMCSLEC.com",
+   Password-0731
+-  UserId = 4,
+    Email = "Co-ordinator@CoordCMCS.com",              
+    Password-4639                    
+ -   UserId = 5,
+    Email = "Manager@ManCMCS.com",        
+    Password-1243                
+-  UserId = 6,
+   Email = "HR@ResourcesCMCS.com",       
+   Password-0432                                    
+---
+# Lecturer Feedback
 
+- Lecturers do not define their hourly rate. Please ensure that HR sets up hourly rates for lecturers in Part 3.
+ -  I did rectify this by adding HR function to my web app and enabled HR to be the only user allowed to edit hourly rate.
+-  Action buttons on the Coordinator and Manager dashboards are not well aligned. 
+> Coordinators and Managers must have the option to fully view all the details of a claim. How does one view a supporting doc?
+> Managers should only be able to action claims that were previously approved/verified by Coordinators. Nothing else.
+  - I aligned Co-ordinator and manager accordingly.
+  - There is a clickable view button on the claims table that allows you to view the supporting doc.
+- No file type and size validation. Files are saved publicly in wwwroot/uploads without encryption or authorisation, with minimal error handling (no IO try/catch, request-size limits,      etc.)
+    - Added file validation.
+  
+                   
 ---
 
 ## Links
