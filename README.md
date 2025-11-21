@@ -51,6 +51,7 @@ CMCS_Web_App/
 ├── Controllers/
 │ ├── HomeController.cs
 │ ├── LecturerController.cs
+| ├── HRController.cs
 │ ├── CoordinatorController.cs
 │ ├── ManagerController.cs
 │ └── ReportsController.cs
@@ -69,6 +70,8 @@ CMCS_Web_App/
 │ ├── Manager/
 │ └── Reports/
 │
+├──Services/
+| ReportService.cs
 ├── wwwroot/
 │ ├── css/
 │ ├── js/
@@ -79,6 +82,25 @@ CMCS_Web_App/
 
 
 ---
+
+##  Technologies Used
+
+### **Backend**
+
+* **ASP.NET Core MVC** – Main web framework used to build the application.
+* **Entity Framework Core** – ORM for database read/write operations.
+* **SQLite / SQL Server** – Database engine (depending on your configuration).
+* **Dependency Injection** – Used for services such as PDF conversion and database context.
+
+### **Frontend**
+
+* **Razor Views (.cshtml)** – Dynamic HTML pages with C#.
+* **TailwindCSS or Bootstrap** – For responsive UI and layout.
+
+### **PDF Generation**
+
+* **DinkToPdf** – Generates PDF versions of claim reports.
+ ---
 
 ##  Claim Workflow
 
@@ -97,8 +119,11 @@ CMCS_Web_App/
 ---
 
 ## Links
-- YouTube Link: https://youtu.be/DwG_JdK6Yc0
-- GitHub Link: https://github.com/VCCT-PROG6212-2025-G4/PROG6212-PART2ST1043845
+- 
+- GitHub Link:
+
+
+
 
 
 
