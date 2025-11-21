@@ -59,18 +59,27 @@ namespace CMCS_Web_App.Controllers
             }
 
             // 3. Store session values
-            HttpContext.Session.SetString("UserId", user.UserId.ToString());
+            HttpContext.Session.SetInt32("UserId", user.UserId);
+
             HttpContext.Session.SetString("Role", user.Role);
             HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
 
+            if (user.Role == "Lecturer")
+            {
+                var lecturer = await _context.Lecturers.FirstOrDefaultAsync(l => l.Email == user.Email);
+                if (lecturer != null)
+                {
+                    HttpContext.Session.SetInt32("LecturerId", lecturer.LecturerId);
+                }
+            }
+            
             Console.WriteLine("User logged in with role: " + user.Role);
 
             // 4. Redirect based on role
             return user.Role switch
             {
-                "Lecturer" => RedirectToAction("LecturerDash", "Lecturer",
-                               new { firstName = user.FirstName, lastName = user.LastName }),
-
+                "Lecturer" => RedirectToAction("LecturerDash", "Lecturer"),
+                              
                 "Coordinator" => RedirectToAction("CoordinatorDash", "Coordinator"),
 
                 "Manager" => RedirectToAction("ManagerDash", "Manager"),

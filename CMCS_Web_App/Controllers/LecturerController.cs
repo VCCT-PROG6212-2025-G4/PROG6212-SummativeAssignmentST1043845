@@ -27,11 +27,11 @@ public class LecturerController : Controller
     [HttpGet("Lecturer/LecturerDash")]
     public IActionResult LecturerDash()
     {
-        var userId = HttpContext.Session.GetString("UserId");
+        var lecturerId = HttpContext.Session.GetInt32("LecturerId");
         var role = HttpContext.Session.GetString("Role");
 
         // Check if user is logged in
-        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role))
+        if (lecturerId == null || string.IsNullOrEmpty(role))
         {
             return RedirectToAction("Login", "Auth");
         }
@@ -47,8 +47,11 @@ public class LecturerController : Controller
         // Get name from session
         ViewBag.LecturerName = HttpContext.Session.GetString("UserName");
 
+        // Optional: Load claims or lecturer info here
+
         return View();
     }
+
 
 
     //-----------------------------------------------------------------------------------------------------------------------------//
@@ -89,11 +92,23 @@ public class LecturerController : Controller
         claim.DateSubmitted = DateTime.Now;
         claim.Status = ClaimStatus.Pending;
 
-        _context.Claims.Add(claim);
-        await _context.SaveChangesAsync();
+        claim.LecturerId = HttpContext.Session.GetInt32("LecturerId") ?? 0;
 
-       
-        return RedirectToAction(nameof(MyClaims), new { firstName = claim.FirstName, lastName = claim.LastName });
+        _context.Claims.Add(claim);
+               
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", "Error saving claim: " + ex.Message);
+            return View(claim);
+        }
+
+
+
+        return RedirectToAction("MyClaims");
     }
 
  //---------------------------------------------------------------------------------------------------------------//
@@ -110,7 +125,7 @@ public class LecturerController : Controller
         return View();
     }
 
- //------------------------------------------------------------------------------------------------------------------------------------------------------------//
+    //------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
     /// <summary>
     /// My Claims View
@@ -120,20 +135,28 @@ public class LecturerController : Controller
     /// <returns></returns>
 
 
-    public async Task<IActionResult> MyClaims(string firstName, string lastName)
+    public async Task<IActionResult> MyClaims()
     {
+        var lecturerId = HttpContext.Session.GetInt32("LecturerId");
+        if (lecturerId == null)
+            return RedirectToAction("Login", "Auth");
+
         var claims = await _context.Claims
-            .Where(c => c.FirstName == firstName && c.LastName == lastName)
+            .Where(c => c.LecturerId == lecturerId)
             .OrderByDescending(c => c.DateSubmitted)
             .ToListAsync();
 
         if (!claims.Any())
         {
             ViewBag.Message = "No claims found for this lecturer.";
-            return View("MyClaims"); 
+            return View("MyClaims", claims); // still pass empty list
         }
 
-        ViewBag.LecturerName = $"{firstName} {lastName}";
+        var lecturer = await _context.Lecturers.FindAsync(lecturerId);
+        ViewBag.LecturerName = lecturer != null
+            ? $"{lecturer.FirstName} {lecturer.LastName}"
+            : "Unknown Lecturer";
+
         return View(claims);
     }
 

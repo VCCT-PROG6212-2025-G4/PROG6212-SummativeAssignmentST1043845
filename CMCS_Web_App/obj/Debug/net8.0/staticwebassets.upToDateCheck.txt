@@ -42,10 +42,11 @@ C:\Users\KBM\.nuget\packages\bootstrap\5.3.8\contentFiles\any\any\wwwroot\js\boo
 C:\Users\KBM\.nuget\packages\bootstrap\5.3.8\contentFiles\any\any\wwwroot\js\bootstrap.js.map
 C:\Users\KBM\.nuget\packages\bootstrap\5.3.8\contentFiles\any\any\wwwroot\js\bootstrap.min.js
 C:\Users\KBM\.nuget\packages\bootstrap\5.3.8\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map
-wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
-wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
 wwwroot\uploads\3dcfcf78-797f-4fb5-8c09-d6a08046fbac_Resume..docx
 wwwroot\uploads\4d2dacef-5b69-4182-8dac-e00c80351e78_PROG6212POE.pdf
+wwwroot\uploads\70a0af16-e7bb-4cca-a5f0-ccbdbd7f287d__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf
 wwwroot\uploads\73ec1bb0-088d-4605-9d9a-0db962815978_INSY6212 Assignment 2.docx
 wwwroot\uploads\b3ebde24-6330-458a-97ba-4dc889a19b32_Resume..docx
 wwwroot\uploads\bc22fd3d-b748-49a3-9bfe-126bec9b9b83_no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg
+wwwroot\uploads\d89a7850-d021-44d4-8de6-52d267329bbd__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf
+wwwroot\uploads\f3615cb3-20c6-4784-81d9-1585e0f6b600__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf

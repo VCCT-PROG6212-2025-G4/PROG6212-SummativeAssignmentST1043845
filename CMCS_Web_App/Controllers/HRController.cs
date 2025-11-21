@@ -2,6 +2,7 @@
 using CMCS_Web_App.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static CMCS_Web_App.Data.AppDbContext;
 
 
 namespace CMCS_Web_App.Controllers
@@ -51,16 +52,112 @@ namespace CMCS_Web_App.Controllers
         // =============================
         public IActionResult LecturersManager()
         {
-            if (!IsHR())
-            {
-                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
-                    return RedirectToAction("Login", "Auth");
+            // Ensure user is authenticated
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                return RedirectToAction("Login", "Auth");
 
+            // Ensure user is HR
+            if (!IsHR())
                 return RedirectToAction("AccessDenied", "Auth");
+
+            // Get all users with role "Lecturer"
+            var lecturerUsers = _context.Users
+                .Where(u => u.Role == "Lecturer")
+                .ToList();
+
+            return View(lecturerUsers);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateUser(Lecturer lecturer)
+        {
+            if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
+
+            if (ModelState.IsValid)
+            {
+                // Hash password
+                var hashedPassword = PasswordHasher.Hash(lecturer.PasswordHash ?? "");
+
+                // Create User
+                var user = new User
+                {
+                    Email = lecturer.Email,
+                    FirstName = lecturer.FirstName,
+                    LastName = lecturer.LastName,
+                    Role = "Lecturer",
+                    PasswordHash = hashedPassword
+                };
+
+                // Update Lecturer's PasswordHash
+                lecturer.PasswordHash = hashedPassword;
+
+                _context.Users.Add(user);
+                _context.Lecturers.Add(lecturer);
+                _context.SaveChanges();
+
+                return RedirectToAction("LecturersManager");
             }
 
-            var lecturers = _context.Lecturers.ToList();
-            return View(lecturers);
+            return View(lecturer);
+        }
+
+        public IActionResult EditLecturer(int id)
+        {
+            if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
+
+            var lecturer = _context.Lecturers.Find(id);
+            if (lecturer == null) return NotFound();
+
+            return View(lecturer);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditLecturer(Lecturer lecturer)
+        {
+            if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
+
+            if (ModelState.IsValid)
+            {
+                // Update Lecturer
+                _context.Lecturers.Update(lecturer);
+
+                // Also update matching User (by email)
+                var user = _context.Users.FirstOrDefault(u => u.Email == lecturer.Email);
+                if (user != null)
+                {
+                    user.FirstName = lecturer.FirstName;
+                    user.LastName = lecturer.LastName;
+                    user.Email = lecturer.Email;
+                }
+
+                _context.SaveChanges();
+                return RedirectToAction("LecturersManager");
+            }
+
+            return View(lecturer);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteLecturer(int id)
+        {
+            if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
+
+            var lecturer = _context.Lecturers.Find(id);
+            if (lecturer != null)
+            {
+                // Find matching User by email
+                var user = _context.Users.FirstOrDefault(u => u.Email == lecturer.Email && u.Role == "Lecturer");
+
+                if (user != null)
+                    _context.Users.Remove(user);
+
+                _context.Lecturers.Remove(lecturer);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("LecturersManager");
         }
 
         // =============================

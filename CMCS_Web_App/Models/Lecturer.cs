@@ -11,20 +11,28 @@ namespace CMCS_Web_App.Models
         public int LecturerId { get; set; }
 
         [Required]
-        public  string? FirstName { get; set; }
+        [MaxLength(100)]
+        public string FirstName { get; set; } = string.Empty;
 
         [Required]
-        public  string? LastName { get; set; }
+        [MaxLength(100)]
+        public string LastName { get; set; } = string.Empty;
 
         [EmailAddress]
-        public required string Email { get; set; }
+        [Required]
+        [MaxLength(200)]
+        public string Email { get; set; } = string.Empty;
 
-        public required string Department { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string Department { get; set; } = string.Empty;
 
         [Range(0, 1000)]
         public decimal RatePerHour { get; set; }
 
-        public required ICollection<Claim> Claims { get; set; }
+        // Navigation collection must be initialized to avoid nulls
+        public ICollection<Claim> Claims { get; set; } = new List<Claim>();
+
+        public string? PasswordHash { get; set; }
     }
 }
-

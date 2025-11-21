@@ -22,7 +22,7 @@ namespace CMCS_Web_App.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<User>(u =>
+             builder.Entity<User>(u =>
             {
                 u.HasKey(x => x.UserId);
                 u.Property(x => x.Email).IsRequired().HasMaxLength(200);
@@ -32,15 +32,30 @@ namespace CMCS_Web_App.Data
                 u.Property(x => x.LastName).HasMaxLength(100);
             });
 
+            // Lecturer
+            builder.Entity<Lecturer>(l =>
+            {
+                l.HasKey(x => x.LecturerId);
+                l.Property(x => x.Email).IsRequired().HasMaxLength(200);
+                l.Property(x => x.FirstName).HasMaxLength(100);
+                l.Property(x => x.LastName).HasMaxLength(100);
+                l.Property(x => x.Department).HasMaxLength(100);
+                l.HasMany(x => x.Claims).WithOne(c => c.Lecturer).HasForeignKey(c => c.LecturerId);
+            });
+
+            // Claim
+            builder.Entity<Claim>(c =>
+            {
+                c.HasKey(x => x.ClaimId);
+                c.Property(x => x.HoursWorked).IsRequired();
+                c.Property(x => x.HourlyRate).HasColumnType("decimal(10,2)");
+                c.Property(x => x.DateSubmitted).HasColumnType("datetime");
+            });
+
             // ===============================
             // USER SEEDING (TEST ACCOUNTS)
             // ===============================
-
             builder.Entity<User>().HasData(
-
-                // -----------------------------
-                // LECTURERS (3 accounts)
-                // -----------------------------
                 new User
                 {
                     UserId = 1,
@@ -68,10 +83,6 @@ namespace CMCS_Web_App.Data
                     Role = "Lecturer",
                     PasswordHash = PasswordHasher.Hash("0731")
                 },
-
-                // -----------------------------
-                // COORDINATOR
-                // -----------------------------
                 new User
                 {
                     UserId = 4,
@@ -81,10 +92,6 @@ namespace CMCS_Web_App.Data
                     Role = "Coordinator",
                     PasswordHash = PasswordHasher.Hash("4639")
                 },
-
-                // -----------------------------
-                // MANAGER
-                // -----------------------------
                 new User
                 {
                     UserId = 5,
@@ -94,10 +101,6 @@ namespace CMCS_Web_App.Data
                     Role = "Manager",
                     PasswordHash = PasswordHasher.Hash("1243")
                 },
-
-                // -----------------------------
-                // HR
-                // -----------------------------
                 new User
                 {
                     UserId = 6,
@@ -106,6 +109,39 @@ namespace CMCS_Web_App.Data
                     LastName = "Fiona",
                     Role = "HR",
                     PasswordHash = PasswordHasher.Hash("0432")
+                }
+            );
+
+            // ===============================
+            // LECTURER SEEDING (must match User emails)
+            // ===============================
+            builder.Entity<Lecturer>().HasData(
+                new Lecturer
+                {
+                    LecturerId = 1,
+                    Email = "Lofentse13@CMCSLEC.com",
+                    FirstName = "Lofentse",
+                    LastName = "Moagi",
+                    Department = "Mathematics",
+                    RatePerHour = 200.00m
+                },
+                new Lecturer
+                {
+                    LecturerId = 2,
+                    Email = "Karabo28@CMCSLEC.com",
+                    FirstName = "Karabo",
+                    LastName = "Kgoebane",
+                    Department = "Computer Science",
+                    RatePerHour = 220.00m
+                },
+                new Lecturer
+                {
+                    LecturerId = 3,
+                    Email = "Claudia06@CMCSLEC.com",
+                    FirstName = "Claudia",
+                    LastName = "Brander",
+                    Department = "Physics",
+                    RatePerHour = 210.00m
                 }
             );
         }
@@ -123,7 +159,5 @@ namespace CMCS_Web_App.Data
                 return Convert.ToHexString(hash);
             }
         }
-
     }
 }
-

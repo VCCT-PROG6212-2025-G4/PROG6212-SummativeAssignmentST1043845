@@ -4,32 +4,46 @@
     Layout = "~/Views/Shared/_HRLayout.cshtml";
     ViewData["Title"] = "Approved Claims";
 }
-<h2>Approved Claims</h2>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Lecturer</th>
-            <th>Hours Worked</th>
-            <th>Rate</th>
-            <th>Total Amount</th>
-            <th>Approved By</th>
-            <th>Date Approved</th>
-        </tr>
-    </thead>
+<div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800 text-center">
+        Approved Claims Overview
+    </h2>
 
-    <tbody>
-        @foreach (var claim in Model)
-        {
-            <tr>
-                <td>@claim.Lecturer.FirstName @claim.Lecturer.LastName</td>
-                <td>@claim.HoursWorked</td>
-                <td>R @claim.HourlyRate</td>
-                <td><strong>R @claim.TotalAmount</strong></td>
-                <td>@claim.ApprovedBy</td>
-                <td>@claim.DateApproved?.ToShortDateString()</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <p class="text-center text-gray-600">@ViewBag.Message</p>
+    }
+    else if (Model != null && Model.Any())
+    {
+        <table class="min-w-full border-collapse border border-gray-300">
+            <thead class="bg-gray-900 text-white">
+                <tr>
+                    <th class="py-3 px-4 text-left">Lecturer</th>
+                    <th class="py-3 px-4 text-left">Hours Worked</th>
+                    <th class="py-3 px-4 text-left">Rate (R)</th>
+                    <th class="py-3 px-4 text-left">Total Amount (R)</th>
+                    <th class="py-3 px-4 text-left">Approved By</th>
+                    <th class="py-3 px-4 text-left">Date Approved</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in Model.OrderByDescending(c => c.DateApproved))
+                {
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-2 px-4">@claim.Lecturer.FirstName @claim.Lecturer.LastName</td>
+                        <td class="py-2 px-4">@claim.HoursWorked</td>
+                        <td class="py-2 px-4">@claim.HourlyRate</td>
+                        <td class="py-2 px-4 font-semibold">@claim.TotalAmount</td>
+                        <td class="py-2 px-4">@claim.ApprovedBy</td>
+                        <td class="py-2 px-4">@claim.DateApproved?.ToString("f")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-center text-gray-600">No approved claims available.</p>
+    }
+</div>

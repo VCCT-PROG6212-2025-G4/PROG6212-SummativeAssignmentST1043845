@@ -10,10 +10,12 @@ namespace CMCS_Web_App.Controllers
     public class ClaimsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public ClaimsController(AppDbContext context)
+        public ClaimsController(AppDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         /// <summary>
@@ -44,56 +46,62 @@ namespace CMCS_Web_App.Controllers
             return View(claim);
        }
 
-//---------------------------------------------------------------------------------------------------------------------------------------//
+        //---------------------------------------------------------------------------------------------------------------------------------------//
 
-        //// GET: Claims/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
+        // GET: Claims/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-        //// POST: Claims/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(Claim claim)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return View(claim);
+        // POST: Claims/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ClaimVM vm)
+        {
+            if (!ModelState.IsValid)
+                return View(vm);
 
-        //    // Handle file upload
-        //    if (claim.Document != null && claim.Document.Length > 0)
-        //    {
-        //        var allowedExtensions = new[] { ".pdf", ".docx", ".xlsx" };
-        //        var extension = Path.GetExtension(claim.Document.FileName).ToLower();
+            var lecturerId = HttpContext.Session.GetInt32("LecturerId");
+            if (lecturerId == null)
+                return RedirectToAction("Login", "Auth");
 
-        //        if (!allowedExtensions.Contains(extension))
-        //        {
-        //            ModelState.AddModelError("Document", "Only PDF, DOCX, and XLSX files are allowed.");
-        //            return View(claim);
-        //        }
+            var claim = new Claim
+            {
+                Description = vm.Description,
+                HoursWorked = (int)vm.HoursWorked,
+                LecturerId = lecturerId.Value,
+                DateSubmitted = DateTime.Now,
+                Status = ClaimStatus.Pending
+            };
 
-        //        var uploadsFolder = Path.Combine("wwwroot/uploads");
-        //        Directory.CreateDirectory(uploadsFolder);
+            if (vm.Document != null && vm.Document.Length > 0)
+            {
+                var extension = Path.GetExtension(vm.Document.FileName).ToLower();
+                var allowedExtensions = new[] { ".pdf", ".docx", ".xlsx" };
+                if (!allowedExtensions.Contains(extension))
+                {
+                    ModelState.AddModelError("Document", "Only PDF, DOCX, and XLSX files are allowed.");
+                    return View(vm);
+                }
 
-        //        var fileName = $"{Guid.NewGuid()}{extension}";
-        //        var filePath = Path.Combine(uploadsFolder, fileName);
+                var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
+                Directory.CreateDirectory(uploadsFolder);
+                var fileName = $"{Guid.NewGuid()}{extension}";
+                var filePath = Path.Combine(uploadsFolder, fileName);
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await vm.Document.CopyToAsync(stream);
+                claim.SupportingDocumentPath = "/uploads/" + fileName;
+            }
 
-        //        using var stream = new FileStream(filePath, FileMode.Create);
-        //        await claim.Document.CopyToAsync(stream);
+            _context.Claims.Add(claim);
+            await _context.SaveChangesAsync();
 
-        //        claim.SupportingDocumentPath = "/uploads/" + fileName;
-        //    }
+            return RedirectToAction("MyClaims");
+        }
 
-        //    claim.DateSubmitted = DateTime.Now;
-        //    claim.Status = ClaimStatus.Pending;
 
-        //    _context.Add(claim);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
         /// <summary>
         /// GET: Claims/Edit/5

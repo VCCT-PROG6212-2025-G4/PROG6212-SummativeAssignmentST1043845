@@ -30,6 +30,9 @@ namespace CMCS_Web_App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateSubmitted")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
@@ -38,7 +41,7 @@ namespace CMCS_Web_App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("HourlyRate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("HoursWorked")
                         .HasColumnType("INTEGER");
@@ -124,14 +127,17 @@ namespace CMCS_Web_App.Migrations
 
                     b.Property<string>("Department")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("HRId")
@@ -139,6 +145,7 @@ namespace CMCS_Web_App.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("RatePerHour")
@@ -149,6 +156,35 @@ namespace CMCS_Web_App.Migrations
                     b.HasIndex("HRId");
 
                     b.ToTable("Lecturers");
+
+                    b.HasData(
+                        new
+                        {
+                            LecturerId = 1,
+                            Department = "Mathematics",
+                            Email = "Lofentse13@CMCSLEC.com",
+                            FirstName = "Lofentse",
+                            LastName = "Moagi",
+                            RatePerHour = 200.00m
+                        },
+                        new
+                        {
+                            LecturerId = 2,
+                            Department = "Computer Science",
+                            Email = "Karabo28@CMCSLEC.com",
+                            FirstName = "Karabo",
+                            LastName = "Kgoebane",
+                            RatePerHour = 220.00m
+                        },
+                        new
+                        {
+                            LecturerId = 3,
+                            Department = "Physics",
+                            Email = "Claudia06@CMCSLEC.com",
+                            FirstName = "Claudia",
+                            LastName = "Brander",
+                            RatePerHour = 210.00m
+                        });
                 });
 
             modelBuilder.Entity("CMCS_Web_App.Models.Manager", b =>

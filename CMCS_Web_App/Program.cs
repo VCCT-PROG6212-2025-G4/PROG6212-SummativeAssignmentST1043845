@@ -14,6 +14,9 @@ namespace CMCS_Web_App
 
             builder.Services.AddControllersWithViews();
 
+            // Add memory cache for sessions
+            builder.Services.AddDistributedMemoryCache();
+
             // Database setup
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -37,10 +40,10 @@ namespace CMCS_Web_App
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
-
-            // Enable session middleware
+            // IMPORTANT: Session MUST come before routing
             app.UseSession();
+
+            app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
