@@ -1,49 +1,41 @@
 ﻿@model IEnumerable<CMCS_Web_App.Models.Claim>
-
 @{
-    Layout = "~/Views/Shared/_HRLayout.cshtml";
     ViewData["Title"] = "Approved Claims";
+    Layout = "~/Views/Shared/_HRLayout.cshtml";
 }
 
-<div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-6 mt-6">
-    <h2 class="text-2xl font-bold mb-4 text-gray-800 text-center">
-        Approved Claims Overview
-    </h2>
+<div class="max-w-6xl mx-auto mt-10 bg-white rounded-2xl shadow p-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Approved Claims</h1>
 
-    @if (!string.IsNullOrEmpty(ViewBag.Message))
-    {
-        <p class="text-center text-gray-600">@ViewBag.Message</p>
-    }
-    else if (Model != null && Model.Any())
-    {
-        <table class="min-w-full border-collapse border border-gray-300">
-            <thead class="bg-gray-900 text-white">
-                <tr>
-                    <th class="py-3 px-4 text-left">Lecturer</th>
-                    <th class="py-3 px-4 text-left">Hours Worked</th>
-                    <th class="py-3 px-4 text-left">Rate (R)</th>
-                    <th class="py-3 px-4 text-left">Total Amount (R)</th>
-                    <th class="py-3 px-4 text-left">Approved By</th>
-                    <th class="py-3 px-4 text-left">Date Approved</th>
+    <table class="w-full border-collapse">
+        <thead>
+            <tr class="bg-gray-100 text-left">
+                <th class="p-3 font-semibold text-gray-700">Lecturer</th>
+                <th class="p-3 font-semibold text-gray-700">Hours</th>
+                <th class="p-3 font-semibold text-gray-700">Rate (R)</th>
+                <th class="p-3 font-semibold text-gray-700">Total (R)</th>
+                <th class="p-3 font-semibold text-gray-700">Date Submitted</th>
+                <th class="p-3 font-semibold text-gray-700">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr class="border-b">
+                    <td class="p-3">@c.Lecturer.FirstName @c.Lecturer.LastName</td>
+                    <td class="p-3">@c.HoursWorked</td>
+                    <td class="p-3">@c.Lecturer.RatePerHour</td>
+                    <td class="p-3 font-semibold text-green-700">
+                        @(c.HoursWorked* c.Lecturer.RatePerHour)
+                    </td>
+                    <td class="p-3">@c.DateSubmitted.ToShortDateString()</td>
+                    <td class="p-3">
+                        <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">
+                            Approved
+                        </span>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var claim in Model.OrderByDescending(c => c.DateApproved))
-                {
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="py-2 px-4">@claim.Lecturer.FirstName @claim.Lecturer.LastName</td>
-                        <td class="py-2 px-4">@claim.HoursWorked</td>
-                        <td class="py-2 px-4">@claim.HourlyRate</td>
-                        <td class="py-2 px-4 font-semibold">@claim.TotalAmount</td>
-                        <td class="py-2 px-4">@claim.ApprovedBy</td>
-                        <td class="py-2 px-4">@claim.DateApproved?.ToString("f")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p class="text-center text-gray-600">No approved claims available.</p>
-    }
+            }
+        </tbody>
+    </table>
 </div>
