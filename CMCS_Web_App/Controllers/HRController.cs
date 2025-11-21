@@ -1,8 +1,11 @@
 ﻿using CMCS_Web_App.Data;
 using CMCS_Web_App.Models;
+using CMCS_Web_App.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
+using System.Xml.Linq;
 using static CMCS_Web_App.Data.AppDbContext;
 
 
@@ -11,10 +14,11 @@ namespace CMCS_Web_App.Controllers
     public class HRController : Controller
     {
         private readonly AppDbContext _context;
-
-        public HRController(AppDbContext context)
+        private readonly ReportService _reportService;
+        public HRController(AppDbContext context, ReportService reportService)
         {
             _context = context;
+            _reportService = reportService;
         }
 
         [HttpGet("HR/HRDash")]
@@ -94,6 +98,142 @@ namespace CMCS_Web_App.Controllers
                 .ToListAsync();
 
             return View(approvedClaims);
+        }
+
+        [HttpGet("HR/ApprovedClaimsReport")]
+        public IActionResult ApprovedClaimsReport(DateTime? dateSubmitted)
+        {
+            var claims = _context.Claims
+                .Where(c => c.ClaimStatus == ClaimStatus.Approved)
+                .AsQueryable();
+
+            if (dateSubmitted.HasValue)
+            {
+                claims = claims.Where(c => c.DateSubmitted.Date == dateSubmitted.Value.Date);
+            }
+
+            return View(claims.ToList());
+        }
+
+
+
+        // 2. Generate report (HTML view or PDF)
+        [HttpPost]
+        public IActionResult GenerateApprovedClaimsPdf(DateTime? dateSubmitted)
+        {
+            var claims = _context.Claims
+                .Where(c => c.ClaimStatus == ClaimStatus.Approved)
+                .AsQueryable();
+
+            if (dateSubmitted.HasValue)
+            {
+                claims = claims.Where(c => c.DateSubmitted.Date == dateSubmitted.Value.Date);
+            }
+
+            // ---- PDF CREATION ----
+            using (MemoryStream stream = new MemoryStream())
+            {
+                PdfDocument pdf = new PdfDocument();
+                var page = pdf.Pages.Add();
+                var gfx = XGraphics.FromPdfPage(page);
+                var font = new XFont("Verdana", 12);
+
+                gfx.DrawString("Approved Claims Report", font, XBrushes.Black,
+                    new XRect(0, 20, page.Width, 20), XStringFormats.TopCenter);
+
+                if (dateSubmitted.HasValue)
+                {
+                    gfx.DrawString($"Filtered by Date Submitted: {dateSubmitted.Value:yyyy-MM-dd}",
+                        font, XBrushes.Black,
+                        new XRect(20, 50, page.Width, 20), XStringFormats.TopLeft);
+                }
+
+                int yOffset = 90;
+                foreach (var claim in claims)
+                {
+                    gfx.DrawString(
+                        $"Claim #{claim.ClaimId} - {claim.Amount} - Submitted: {claim.DateSubmitted:yyyy-MM-dd}",
+                        font,
+                        XBrushes.Black,
+                        new XRect(20, yOffset, page.Width, 20),
+                        XStringFormats.TopLeft);
+
+                    yOffset += 30;
+                }
+
+                pdf.Save(stream, false);
+                return File(stream.ToArray(), "application/pdf", "ApprovedClaimsReport.pdf");
+            }
+        }
+}
+
+        // 3. Invoice generation UI (choose lecturer or all)
+        [HttpGet]
+        public IActionResult Invoices()
+        {
+            if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
+
+            // pass lecturers list to choose from
+            var lecturers = _context.Lecturers.ToList();
+            return View(lecturers);
+        }
+
+        // 4. Generate invoice(s)
+        [HttpPost]
+        public async Task<IActionResult> GenerateInvoices(int? lecturerId, DateTime from, DateTime to, string output = "pdf")
+        {
+            if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
+
+            // get approved claims grouped by lecturer
+            var claims = await _reportService.GetApprovedClaimsAsync(from, to);
+            var grouped = claims.GroupBy(c => c.Lecturer.Email);
+
+            if (lecturerId.HasValue)
+            {
+                var singleLect = _context.Lecturers.Find(lecturerId.Value);
+                if (singleLect == null) return NotFound();
+
+                var theirClaims = claims.Where(c => c.Lecturer.LecturerId == lecturerId.Value).ToList();
+                var html = _reportService.BuildInvoiceHtml($"{singleLect.FirstName} {singleLect.LastName}", singleLect.Email, theirClaims, from, to);
+
+                if (output == "pdf")
+                {
+                    var pdf = _reportService.ConvertHtmlToPdf(html);
+                    if (pdf == null) return Content(html, "text/html");
+                    return File(pdf, "application/pdf", $"Invoice_{singleLect.LastName}_{from:yyyyMMdd}_{to:yyyyMMdd}.pdf");
+                }
+                return Content(html, "text/html");
+            }
+            else
+            {
+                // Batch: create ZIP of PDFs (or return HTMLs)
+                using var mem = new MemoryStream();
+                using var archive = new System.IO.Compression.ZipArchive(mem, System.IO.Compression.ZipArchiveMode.Create, true);
+
+                foreach (var grp in grouped)
+                {
+                    var lec = grp.First().Lecturer;
+                    var html = _reportService.BuildInvoiceHtml($"{lec.FirstName} {lec.LastName}", lec.Email, grp, from, to);
+                    if (output == "pdf")
+                    {
+                        var pdf = _reportService.ConvertHtmlToPdf(html) ?? System.Text.Encoding.UTF8.GetBytes(html);
+                        var entry = archive.CreateEntry($"Invoice_{lec.LastName}_{from:yyyyMMdd}_{to:yyyyMMdd}.pdf");
+                        using var es = entry.Open();
+                        es.Write(pdf, 0, pdf.Length);
+                    }
+                    else
+                    {
+                        var entry = archive.CreateEntry($"Invoice_{lec.LastName}_{from:yyyyMMdd}_{to:yyyyMMdd}.html");
+                        using var es = new StreamWriter(entry.Open());
+                        es.Write(html);
+                    }
+                }
+
+                archive.Dispose();
+                mem.Position = 0;
+                var contentType = "application/zip";
+                return File(mem.ToArray(), contentType, $"Invoices_{from:yyyyMMdd}_{to:yyyyMMdd}.zip");
+            }
         }
 
 

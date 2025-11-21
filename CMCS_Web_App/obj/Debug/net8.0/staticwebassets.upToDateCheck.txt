@@ -50,3 +50,4 @@ wwwroot\uploads\b3ebde24-6330-458a-97ba-4dc889a19b32_Resume..docx
 wwwroot\uploads\bc22fd3d-b748-49a3-9bfe-126bec9b9b83_no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg
 wwwroot\uploads\d89a7850-d021-44d4-8de6-52d267329bbd__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf
 wwwroot\uploads\f3615cb3-20c6-4784-81d9-1585e0f6b600__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf
+wwwroot\uploads\6f7b7180-f092-4914-87f0-01a23abc5022__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf

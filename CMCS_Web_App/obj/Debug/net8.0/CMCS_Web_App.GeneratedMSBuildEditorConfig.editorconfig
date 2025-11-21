@@ -76,6 +76,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSFJcQXBwcm92ZWRDbGFpbXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/HR/ApprovedClaimsReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSFJcQXBwcm92ZWRDbGFpbXNSZXBvcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/HR/CreateUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSFJcQ3JlYXRlVXNlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -86,6 +90,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/HR/HRDash.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSFJcSFJEYXNoLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/HR/Invoices.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSFJcSW52b2ljZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/KBM/source/repos/CMCS_Web_Application/PROG6212-PART2ST1043845/CMCS_Web_App/Views/HR/UserManager.cshtml]

@@ -7,6 +7,7 @@ C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_
 C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App\bin\Debug\net8.0\CMCS_Web_App.runtimeconfig.json
 C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App\bin\Debug\net8.0\CMCS_Web_App.dll
 C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App\bin\Debug\net8.0\CMCS_Web_App.pdb
+C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App\bin\Debug\net8.0\DinkToPdf.dll
 C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App\bin\Debug\net8.0\Humanizer.dll
 C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App\bin\Debug\net8.0\MaterialDesign.Icons.dll
 C:\Users\KBM\source\repos\CMCS_Web_Application\PROG6212-PART2ST1043845\CMCS_Web_App\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll

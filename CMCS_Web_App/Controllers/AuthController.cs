@@ -80,7 +80,7 @@ namespace CMCS_Web_App.Controllers
             {
                 "Lecturer" => RedirectToAction("LecturerDash", "Lecturer"),
                               
-                "Coordinator" => RedirectToAction("CoordinatorDash", "Coordinator"),
+                "Coordinator" => RedirectToAction("CoordDash", "Coordinator"),
 
                 "Manager" => RedirectToAction("ManagerDash", "Manager"),
 

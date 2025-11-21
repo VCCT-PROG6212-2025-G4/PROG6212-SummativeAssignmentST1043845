@@ -1,0 +1,92 @@
+﻿@model ApprovedClaimsReportVM
+
+<h1 class="text-3xl font-bold mb-6 text-gray-800">Approved Claims Report</h1>
+
+<!-- ===================== DATE FILTER FORM ===================== -->
+<form method="get" asp-action="ApprovedClaimsReport" class="bg-white p-5 rounded-lg shadow mb-6">
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+            <label class="block font-semibold mb-1">From Date</label>
+            <input type="date" name="fromDate"
+                   value="@Model.FromDate?.ToString("yyyy-MM-dd")"
+                   class="w-full border-gray-300 rounded p-2">
+        </div>
+
+        <div>
+            <label class="block font-semibold mb-1">To Date</label>
+            <input type="date" name="toDate"
+                   value="@Model.ToDate?.ToString("yyyy-MM-dd")"
+                   class="w-full border-gray-300 rounded p-2">
+        </div>
+
+        <div class="flex items-end">
+            <button class="px-4 py-2 bg-blue-600 text-white rounded w-full hover:bg-blue-700">
+                Filter
+            </button>
+        </div>
+    </div>
+</form>
+
+<!-- ===================== PDF DOWNLOAD BUTTON ===================== -->
+
+<form method="post" asp-action="GenerateApprovedClaimsPdf" class="mb-8">
+    <input type="hidden" name="fromDate" value="@Model.FromDate" />
+    <input type="hidden" name="toDate" value="@Model.ToDate" />
+
+    <button class="px-5 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700">
+        Download PDF
+    </button>
+</form>
+
+
+<!-- ===================== SUMMARY TABLE ===================== -->
+<h2 class="text-xl font-semibold mt-8 mb-3">Lecturer Summary</h2>
+
+<table class="table-auto w-full border mb-10">
+    <thead class="bg-gray-200">
+        <tr>
+            <th class="p-2 border">Lecturer</th>
+            <th class="p-2 border">Total Hours Worked</th>
+            <th class="p-2 border">Rate (R/hr)</th>
+            <th class="p-2 border">Total Amount (R)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Summary)
+        {
+            <tr>
+                <td class="p-2 border">@item.LecturerName</td>
+                <td class="p-2 border">@item.TotalHoursWorked</td>
+                <td class="p-2 border">@item.RatePerHour</td>
+                <td class="p-2 border">@item.TotalAmountPaid</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<!-- ===================== DETAILED CLAIMS TABLE ===================== -->
+<h2 class="text-xl font-semibold mb-3">All Approved Claims</h2>
+
+<table class="table-auto w-full border">
+    <thead class="bg-gray-200">
+        <tr>
+            <th class="p-2 border">Lecturer</th>
+            <th class="p-2 border">Hours Worked</th>
+            <th class="p-2 border">Rate Per Hour</th>
+            <th class="p-2 border">Total Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model.Claims)
+        {
+            <tr>
+                <td class="p-2 border">@claim.Lecturer.FirstName @claim.Lecturer.LastName</td>
+                <td class="p-2 border">@claim.HoursWorked</td>
+                <td class="p-2 border">@claim.Lecturer.RatePerHour</td>
+                <td class="p-2 border">@(claim.HoursWorked* claim.Lecturer.RatePerHour)</td>
+            </tr>
+        }
+    </tbody>
+</table>

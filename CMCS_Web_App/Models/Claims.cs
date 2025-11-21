@@ -56,6 +56,7 @@ namespace CMCS_Web_App.Models
 
         public DateTime DateSubmitted { get; set; } = DateTime.Now;
         public string? Description { get; set; }
+        //public DateTime Date { get; set; }
     }
 }
 

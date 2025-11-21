@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using DinkToPdf;
+using DinkToPdf.Contracts;
+using CMCS_Web_App.Services;
 
 namespace CMCS_Web_App
 {
@@ -12,16 +15,31 @@ namespace CMCS_Web_App
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // MVC
             builder.Services.AddControllersWithViews();
 
-            // Add memory cache for sessions
+            // PDF Converter
+            builder.Services.AddSingleton<IConverter>(new SynchronizedConverter(new PdfTools()));
+
+            // Report Service
+            builder.Services.AddScoped<ReportService>();
+
+            // Session caching
             builder.Services.AddDistributedMemoryCache();
 
-            // Database setup
+            // Database
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add session support
+            // Authentication
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Auth/Login";
+                    options.AccessDeniedPath = "/Auth/AccessDenied";
+                });
+
+            // Enable Sessions
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
@@ -40,13 +58,12 @@ namespace CMCS_Web_App
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            // IMPORTANT: Session MUST come before routing
-            app.UseSession();
-
             app.UseRouting();
 
-            app.UseAuthentication();
+            app.UseAuthentication();   // <-- MUST come before Authorization
             app.UseAuthorization();
+
+            app.UseSession();          // <-- MUST come after authentication
 
             app.MapControllerRoute(
                 name: "default",

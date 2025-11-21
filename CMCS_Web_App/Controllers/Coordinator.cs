@@ -30,16 +30,16 @@ namespace CMCS_Web_App.Controllers
         public async Task<IActionResult> CoordDash()
         {
             // Check if user is logged in
-            var userId = HttpContext.Session.GetString("UserId");
+            var userId = HttpContext.Session.GetInt32("UserId"); // ✅ use GetInt32
             var role = HttpContext.Session.GetString("Role");
 
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role))
+            if (userId == null || string.IsNullOrEmpty(role))
             {
                 // Session expired or user not logged in
                 return RedirectToAction("Login", "Auth");
             }
 
-            if (role != "Coordinator")
+            if (role != "Coordinator") // ✅ ensure exact match
             {
                 // Logged in but not authorized for this page
                 return RedirectToAction("AccessDenied", "Auth");
@@ -50,10 +50,8 @@ namespace CMCS_Web_App.Controllers
                 .OrderByDescending(c => c.DateSubmitted)
                 .ToListAsync();
 
-            return View("CoordDash", claims);
+            return View("CoordDash", claims); // ✅ ensure /Views/Coordinator/CoordDash.cshtml exists
         }
-
-
         //------------------------------------------------------------------------------------------------------------------------------------------------------//
 
         /// <summary>
