@@ -1,0 +1,71 @@
+﻿@model IEnumerable<CMCS_Web_App.Models.User>
+
+@{
+    ViewData["Title"] = "User Manager";
+    Layout = "~/Views/Shared/_HRLayout.cshtml";
+}
+
+<h1 class="text-3xl font-bold mb-6 text-gray-800">User Manager</h1>
+
+<div class="overflow-x-auto bg-white shadow-lg rounded-lg p-6">
+    <table class="min-w-full text-left text-sm text-gray-700">
+        <thead class="border-b font-medium text-gray-900">
+            <tr>
+                <th class="px-4 py-3">Name</th>
+                <th class="px-4 py-3">Email</th>
+                <th class="px-4 py-3">Department</th>
+                <th class="px-4 py-3">Rate (R/hour)</th>
+                <th class="px-4 py-3">Adjust Rate</th>
+                <th class="px-4 py-3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var u in Model)
+            {
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="px-4 py-3">@u.FirstName @u.LastName</td>
+                    <td class="px-4 py-3">@u.Email</td>
+                    <td class="px-4 py-3">@u.Department</td>
+                    <td class="px-4 py-3 font-semibold text-blue-700">R @u.RatePerHour</td>
+
+                    <!-- Rate +/- buttons -->
+                    <td class="px-4 py-3">
+                        <div class="flex space-x-2">
+
+                            <!-- Decrease -->
+                            <form asp-action="AdjustRate" method="post">
+                                <input type="hidden" name="lecturerId" value="@u.LecturerId" />
+                                <input type="hidden" name="value" value="-10" />
+                                <button type="submit"
+                                        class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                                    -
+                                </button>
+                            </form>
+
+                            <!-- Increase -->
+                            <form asp-action="AdjustRate" method="post">
+                                <input type="hidden" name="lecturerId" value="@u.LecturerId" />
+                                <input type="hidden" name="value" value="10" />
+                                <button type="submit"
+                                        class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">
+                                    +
+                                </button>
+                            </form>
+
+                        </div>
+                    </td>
+
+                    <!-- Action column (Edit) -->
+                    <td class="px-4 py-3">
+                        <a asp-action="EditUser" asp-route-id="@u.UserId"
+                           class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

@@ -11,6 +11,11 @@ namespace CMCS_Web_App.Models
 
         [Required]
         public string? Password { get; set; }
+
+        // Lecturer-specific
+        public int? LecturerId { get; set; }           // null if not a lecturer
+        public string? Department { get; set; }        // null if not a lecturer
+        public decimal? RatePerHour { get; set; }      // null if not a lecturer
     }
 }
 

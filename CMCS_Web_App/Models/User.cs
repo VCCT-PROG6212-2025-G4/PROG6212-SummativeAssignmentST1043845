@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CMCS_Web_App.Models
 {
@@ -12,6 +14,16 @@ namespace CMCS_Web_App.Models
 
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+
+        // Lecturer-specific
+        [NotMapped]
+        public int? LecturerId { get; set; }
+
+        [NotMapped]
+        public string? Department { get; set; }
+
+        [NotMapped]
+        [Range(0, 10000)] public decimal? RatePerHour { get; set; }
     }
 }
 

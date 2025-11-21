@@ -48,16 +48,36 @@ namespace CMCS_Web_App.Controllers
             return HttpContext.Session.GetString("Role") == "HR";
         }
 
-        // ======================================
-        // VIEW ALL LECTURERS
-        // ======================================
-        public IActionResult LecturersManager()
+      
+        // ================================
+        // USER MANAGER (NEW - replaces LecturerManager)
+        // ================================
+        public IActionResult UserManager()
         {
-            if (!IsHR())
-                return RedirectToAction("AccessDenied", "Auth");
+            if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
 
+            var users = _context.Users.ToList();
             var lecturers = _context.Lecturers.ToList();
-            return View(lecturers);
+
+            var model = users.Select(u =>
+            {
+                var lec = lecturers.FirstOrDefault(x => x.Email == u.Email);
+
+                return new User
+                {
+                    UserId = u.UserId,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    Role = u.Role,
+
+                    LecturerId = lec?.LecturerId,
+                    Department = lec?.Department,
+                    RatePerHour = lec?.RatePerHour
+                };
+            }).ToList();
+
+            return View(model);
         }
 
         // ======================================
@@ -76,27 +96,113 @@ namespace CMCS_Web_App.Controllers
             return View(approvedClaims);
         }
 
-        // ======================================
-        // UPDATE HOURLY RATE (within lecturer list)
-        // ======================================
+
         [HttpPost]
-        public async Task<IActionResult> UpdateHourlyRate(int lecturerId, decimal rate)
+        public IActionResult AdjustRate(int lecturerId, int value)
         {
-            if (!IsHR())
-                return RedirectToAction("AccessDenied", "Auth");
+            var lecturer = _context.Lecturers.FirstOrDefault(x => x.LecturerId == lecturerId);
+            if (lecturer == null) return NotFound();
 
-            var lecturer = await _context.Lecturers.FindAsync(lecturerId);
-            if (lecturer == null)
-                return NotFound();
+            lecturer.RatePerHour += value;
+            _context.SaveChanges();
 
-            lecturer.RatePerHour = rate;
+            return RedirectToAction("UserManager");
+        }
 
-            _context.Update(lecturer);
+
+        // ================================
+        // EDIT USER (GET)
+        // ================================
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(int id)
+        {
+            if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return NotFound();
+
+            var lecturer = await _context.Lecturers
+                .FirstOrDefaultAsync(x => x.LecturerId == user.LecturerId);
+
+            var vm = new EditUserVM
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role,
+
+                LecturerId = user.LecturerId,
+                Department = lecturer?.Department,
+                RatePerHour = lecturer?.RatePerHour
+            };
+
+            return View(vm);
+        }
+
+
+
+        // ================================
+        // EDIT USER (POST)
+        // ================================
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserVM vm)
+        {
+            if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
+            if (!ModelState.IsValid) return View(vm);
+
+            var user = await _context.Users.FindAsync(vm.UserId);
+            if (user == null) return NotFound();
+
+            // Update User table
+            user.FirstName = vm.FirstName;
+            user.LastName = vm.LastName;
+            user.Email = vm.Email;
+            user.Role = vm.Role;
+
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Hourly rate updated!";
-            return RedirectToAction("LecturersManager");
+            // If role is Lecturer, update or create lecturer
+            if (vm.Role == "Lecturer")
+            {
+                Lecturer lecturer;
+
+                if (vm.LecturerId == null)
+                {
+                    // create new lecturer
+                    lecturer = new Lecturer
+                    {
+                        FirstName = vm.FirstName,
+                        LastName = vm.LastName,
+                        Email = vm.Email,
+                        Department = vm.Department ?? "Unassigned",
+                        RatePerHour = vm.RatePerHour ?? 0m
+                    };
+
+                    _context.Lecturers.Add(lecturer);
+                }
+                else
+                {
+                    lecturer = await _context.Lecturers.FindAsync(vm.LecturerId);
+
+                    lecturer.FirstName = vm.FirstName;
+                    lecturer.LastName = vm.LastName;
+                    lecturer.Email = vm.Email;
+                    lecturer.Department = vm.Department ?? lecturer.Department;
+                    lecturer.RatePerHour = vm.RatePerHour ?? lecturer.RatePerHour;
+
+                    _context.Lecturers.Update(lecturer);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("UserManager");
         }
+
+
 
         // ======================================
         // CREATE A USER (HR creates all roles)
