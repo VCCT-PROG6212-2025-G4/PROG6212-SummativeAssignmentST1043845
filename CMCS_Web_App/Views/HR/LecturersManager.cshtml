@@ -4,49 +4,47 @@
     Layout = "~/Views/Shared/_HRLayout.cshtml";
 }
 
-<div class="max-w-6xl mx-auto mt-10 bg-white rounded-2xl shadow p-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Lecturer Manager</h1>
+<h1 class="text-3xl font-bold mb-6 text-gray-800">Lecturer Manager</h1>
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-xl">
-            @TempData["SuccessMessage"]
-        </div>
-    }
-
-    <table class="w-full border-collapse">
-        <thead>
-            <tr class="bg-gray-100 text-left">
-                <th class="p-3 font-semibold text-gray-700">Name</th>
-                <th class="p-3 font-semibold text-gray-700">Email</th>
-                <th class="p-3 font-semibold text-gray-700">Department</th>
-                <th class="p-3 font-semibold text-gray-700">Rate / Hour (R)</th>
-                <th class="p-3 font-semibold text-gray-700">Actions</th>
+<div class="overflow-x-auto bg-white shadow-lg rounded-lg p-6">
+    <table class="min-w-full text-left text-sm text-gray-700">
+        <thead class="border-b font-medium text-gray-900">
+            <tr>
+                <th class="px-4 py-3">Name</th>
+                <th class="px-4 py-3">Email</th>
+                <th class="px-4 py-3">Department</th>
+                <th class="px-4 py-3">Rate (R/hour)</th>
+                <th class="px-4 py-3">Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var l in Model)
+
+            @foreach (var lecturer in Model)
             {
-                <tr class="border-b">
-                    <td class="p-3">@l.FirstName @l.LastName</td>
-                    <td class="p-3">@l.Email</td>
-                    <td class="p-3">@l.Department</td>
-                    <td class="p-3 font-semibold">@l.RatePerHour</td>
-                    <td class="p-3">
-                        <form asp-action="UpdateHourlyRate" method="post" class="flex items-center gap-2">
-                            <input type="hidden" name="lecturerId" value="@l.LecturerId" />
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="px-4 py-3">@lecturer.FirstName @lecturer.LastName</td>
+                    <td class="px-4 py-3">@lecturer.Email</td>
+                    <td class="px-4 py-3">@lecturer.Department</td>
+                    <td class="px-4 py-3 font-semibold text-blue-700">R @lecturer.RatePerHour</td>
+
+                    <td class="px-4 py-3">
+                        <form asp-action="UpdateHourlyRate" method="post" class="flex space-x-2">
+                            <input type="hidden" name="lecturerId" value="@lecturer.LecturerId" />
+
                             <input type="number" step="0.01" name="rate"
-                                   class="border rounded-lg p-2 w-28"
-                                   placeholder="New Rate" required />
+                                   class="w-24 px-3 py-2 border rounded"
+                                   placeholder="Rate" required />
 
                             <button type="submit"
-                                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                                 Update
                             </button>
                         </form>
                     </td>
                 </tr>
             }
+
         </tbody>
     </table>
 </div>
+

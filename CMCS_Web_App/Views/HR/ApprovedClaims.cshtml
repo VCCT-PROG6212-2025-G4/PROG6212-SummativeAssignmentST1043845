@@ -4,38 +4,39 @@
     Layout = "~/Views/Shared/_HRLayout.cshtml";
 }
 
-<div class="max-w-6xl mx-auto mt-10 bg-white rounded-2xl shadow p-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Approved Claims</h1>
+<div class="p-8">
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Approved Claims</h1>
 
-    <table class="w-full border-collapse">
-        <thead>
-            <tr class="bg-gray-100 text-left">
-                <th class="p-3 font-semibold text-gray-700">Lecturer</th>
-                <th class="p-3 font-semibold text-gray-700">Hours</th>
-                <th class="p-3 font-semibold text-gray-700">Rate (R)</th>
-                <th class="p-3 font-semibold text-gray-700">Total (R)</th>
-                <th class="p-3 font-semibold text-gray-700">Date Submitted</th>
-                <th class="p-3 font-semibold text-gray-700">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var c in Model)
-            {
-                <tr class="border-b">
-                    <td class="p-3">@c.Lecturer.FirstName @c.Lecturer.LastName</td>
-                    <td class="p-3">@c.HoursWorked</td>
-                    <td class="p-3">@c.Lecturer.RatePerHour</td>
-                    <td class="p-3 font-semibold text-green-700">
-                        @(c.HoursWorked* c.Lecturer.RatePerHour)
-                    </td>
-                    <td class="p-3">@c.DateSubmitted.ToShortDateString()</td>
-                    <td class="p-3">
-                        <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">
-                            Approved
-                        </span>
-                    </td>
+    <div class="overflow-x-auto bg-white shadow-lg rounded-lg p-6">
+        <table class="min-w-full text-left text-sm text-gray-700">
+            <thead class="border-b font-medium text-gray-900">
+                <tr>
+                    <th class="px-4 py-3">Claim ID</th>
+                    <th class="px-4 py-3">Lecturer</th>
+                    <th class="px-4 py-3">Hours Worked</th>
+                    <th class="px-4 py-3">Rate (R/hr)</th>
+                    <th class="px-4 py-3">Total Amount</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+                @foreach (var claim in Model)
+                {
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-4 py-3">@claim.ClaimId</td>
+                        <td class="px-4 py-3">
+                            @claim.Lecturer.FirstName @claim.Lecturer.LastName
+                        </td>
+                        <td class="px-4 py-3">@claim.HoursWorked</td>
+                        <td class="px-4 py-3">R @claim.Lecturer.RatePerHour</td>
+                        <td class="px-4 py-3 font-semibold text-green-700">
+                            R @(claim.HoursWorked* claim.Lecturer.RatePerHour)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+
 </div>
