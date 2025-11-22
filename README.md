@@ -2,33 +2,44 @@
 
 ##  Overview
 
-The **Claim Management and Coordination System (CMCS)** is a web-based platform built with **ASP.NET Core MVC** and **Entity Framework Core** to streamline and manage lecturer claim submissions at an academic institution.  
-The system enables **Lecturers** to submit and track claims, while **Coordinators** and **Managers** can review, approve, reject, or hold claims for further evaluation.
-
-CMCS provides a clear workflow for claim management, status tracking, and reporting through a modern and responsive web interface styled with **Tailwind CSS**.
-
+The Contract Monthly Claim System (CMCS) is a web-based platform built with ASP.NET Core MVC, Entity Framework Core, and SQL Server to streamline how lecturers submit work-hour claims. The system supports four roles: Lecturer, Coordinator, Manager, and HR, each with unique dashboards and permissions. UI is built using Tailwind CSS, and authentication uses password hashing + session management.
 ---
 
 ##  Key Features
 
--  **Lecturer Dashboard**
-  - Submit new claims with details such as hours worked, hourly rate, and notes.
-  - Upload supporting documents for verification.
-  - View all personal claims with timestamps and their current statuses (Pending, Approved, or Rejected).
+**Lecturers
 
--  **Coordinator Dashboard**
-  - Login required to access.
-  - Review all lecturer claims in the system.
-  - Approve, reject, or mark claims as pending (for later review).
+- Submit claims with hours worked, notes, and optional supporting documents (PDF/DOCX/XLSX).
 
--  **Manager Dashboard**
-  - Login required to access.
-  - View all claims and their statuses for oversight.
-  - Option to finalize or audit coordinator actions.
+- Name auto-fills based on login.
 
--  **Reports Page (Home Dashboard)**
-  - Displays total claims count and status breakdown (Total, Approved, Pending, Rejected).
-  - Links directly to a reporting view showing claim summaries.
+- View personal claim history and statuses (Pending/Approved/Rejected).
+
+ **Coordinators
+
+- View all lecturer claims.
+
+- Approve, Reject, or set status to Pending.
+
+- Open lecturer documents and read notes.
+
+ **Managers
+
+- Institution-wide visibility over all claims.
+
+- Oversight and auditing of coordinator actions.
+
+ **HR (Admin Role)
+
+- Full user management (create, edit, delete).
+
+- Adjust lecturer hourly rates using +/− controls.
+
+- Generate Approved Claims Reports with date filtering.
+
+- Generate Invoices (single or batch ZIP).
+
+- Access all approved claim histories.
 
 ---
 
@@ -36,50 +47,77 @@ CMCS provides a clear workflow for claim management, status tracking, and report
 
 ###  Controllers
 
-| Controller | Purpose | Key Actions |
+## HomeController
+**Purpose- Handles general navigation and landing pages.
+**Key Actions
+- Index(): Displays the CMCS homepage and navigation options.
+- Privacy(): Shows privacy or general information page.
 
-| **HomeController** | Handles the main landing page and general site navigation. | `Index()` – Displays home page with CMCS overview and navigation buttons.<br>`Privacy()` – Displays privacy policy. |
-| **LecturerController** | Manages lecturer operations: claim submission and viewing. | `Index()` – Displays all lecturers.<br>`SubmitClaim()` – Allows a lecturer to create and upload a claim.<br>`MyClaims()` – Shows all claims submitted by the logged-in lecturer.<br>`Edit/Delete/Details()` – Standard CRUD for lecturer data. |
-| **CoordinatorController** | Provides tools for coordinators to manage submitted claims. | `Login()` – Coordinator authentication.<br>`CoordDash()` (or `Index()`) – Dashboard listing all claims.<br>`ApproveClaim()`, `RejectClaim()`, `SetPending()` – Update claim statuses. |
-| **ManagerController** | Allows managers to review all claims for audit and final approval. | `Login()` – Manager authentication.<br>`ManagerDash()` (or `Index()`) – Displays all claims and their current statuses. |
-| **ReportsController** | Generates statistical summaries of all claims for quick insight. | `Index()` – Shows total, approved, pending, and rejected claim counts.<br>Optional filters for claim status and export options. |
+## AuthController
+**Purpose Manages system-wide authentication and login sessions.
+**Key Actions:
+- Login() / Login(vm): Authenticates HR, Lecturers, Coordinators, and Managers.
+- Logout(): Clears the session and logs the user out.
+- AccessDenied(): Shown when a user attempts to access an unauthorized module.
+
+## LecturerController
+**Purpose: Handles all lecturer-specific features.
+**Key Actions:
+- LecturerDash(): Lecturer dashboard with welcome info.
+- SubmitClaim(): Loads the claim submission form pre-filled with lecturer details.
+- SubmitClaim(vm): Saves a new claim and uploads supporting documents.
+- MyClaims(): Displays all claims submitted by the logged-in lecturer.
+
+## CoordinatorController
+**Purpose: Provides claim review and processing tools for coordinators.
+Key Actions:
+- CoordDash(): Displays all lecturer claims for review.
+- Approve(id): Marks a claim as Approved.
+- Reject(id): Marks a claim as Rejected.
+- SetPending(id):Moves a claim back to Pending for later review.
+
+## ManagerController
+**Purpose: Gives managers oversight of all lecturer claims.
+Key Actions:
+- ManagerDash() – Full list of claims including names, totals, rates, and documents.
+- Approve/Reject/SetPending(id) – Secondary verification options if needed.
+
+## HRController
+**Purpose: Acts as the administrative core of the CMCS system.
+Key Actions:
+**User Management:
+UserManager():View all users (Lecturer, HR, Manager, Coordinator).
+- CreateUser()- CreateUser(vm):Add new users to the system.
+- EditUser(id)- EditUser(vm):Modify user details or lecturer rate.
+- AdjustRate(lecturerId, value): Increase or decrease lecturer hourly pay.
+**Claim Management & Reporting:
+- ApprovedClaims(): View all approved lecturer claims.
+- ApprovedClaimsReport():Filter approved claims by date and generate summaries.
+- GenerateApprovedClaimsReport(): Produce PDF versions of the reports.
+- Invoices() – Choose lecturers/range for invoice generation.
+- GenerateInvoices() – Create PDFs or ZIP bundles of lecturer invoices.
 
 ---
 
 ##  Project Structure
 CMCS_Web_App/
-├── Controllers/
-│ ├── HomeController.cs
-│ ├── LecturerController.cs
-| ├── HRController.cs
-│ ├── CoordinatorController.cs
-│ ├── ManagerController.cs
-│ └── ReportsController.cs
-│
-├── Models/
-│ ├── Claim.cs
-│ ├── Lecturer.cs
-│ ├── ClaimStatus.cs
-│ ├── Reports.cs
-│ └── AppDbContext.cs
-│  
-├── Views/
-│ ├── Home/
-│ ├── Lecturer/
-│ ├── Coordinator/
-│ ├── Manager/
-│ └── Reports/
-│
-├──Services/
-| ReportService.cs
-├── wwwroot/
-│ ├── css/
-│ ├── js/
-│ └── uploads/
-│
-├── appsettings.json
-├── Program.cs
+Controllers/
+-Auth, Lecturer, Coordinator, Manager, HR, Home
 
+Models/
+ - Claim, Lecturer, User, ViewModels, AppDbContext
+
+Services/
+ - ReportService (PDF + HTML reports)
+
+Views/
+ - Lecturer, Coordinator, Manager, HR, Shared
+
+wwwroot/
+ - uploads/, css/, js/
+  
+- appsettings.json
+- Program.cs
 
 ---
 
@@ -102,13 +140,17 @@ CMCS_Web_App/
 * **DinkToPdf** – Generates PDF versions of claim reports.
  ---
 
-##  Claim Workflow
+##  System Workflow
 
-1. **Lecturer** logs in and submits a claim.  
-2. **Claim** is stored in the database with status = `Pending`.  
-3. **Coordinator** reviews and changes status to `Approved`, `Rejected`, or keeps it `Pending`.  
-4. **Manager** has oversight and can review all processed claims.  
-5. **Reports page** displays claim statistics for transparency.
+1.**Lecturer logs in → submits claim.
+
+2.**Claim stored as Pending.
+
+3.**Coordinator reviews → updates status.
+
+4.**Manager oversees all claims.
+
+5.**HR handles reporting, invoices, user admin, and rate management.
 
 ---
 
@@ -143,10 +185,12 @@ CMCS_Web_App/
   - There is a clickable view button on the claims table that allows you to view the supporting doc.
 - No file type and size validation. Files are saved publicly in wwwroot/uploads without encryption or authorisation, with minimal error handling (no IO try/catch, request-size limits,      etc.)
     - Added file validation.
-  
-                   
+                     
 ---
-
+## AI Declaration 
+- Link: https://chatgpt.com/share/69213c23-4e18-8002-8518-81dcea4c17c5 
+  Used  chat for layout wiring confirmation
+---
 ## Links
 - Youtube Link: https://youtu.be/h61cbrlTth8
 - GitHub Link: https://github.com/VCCT-PROG6212-2025-G4/PROG6212-SummativeAssignmentST1043845 
