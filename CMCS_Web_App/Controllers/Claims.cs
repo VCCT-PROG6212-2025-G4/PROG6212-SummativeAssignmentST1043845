@@ -48,7 +48,11 @@ namespace CMCS_Web_App.Controllers
 
         //---------------------------------------------------------------------------------------------------------------------------------------//
 
-        // GET: Claims/Create
+        /// <summary>
+        /// GET: Claims/Create
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClaimVM vm)
@@ -60,7 +64,7 @@ namespace CMCS_Web_App.Controllers
             if (lecturerId == null)
                 return RedirectToAction("Login", "Auth");
 
-            // FILE VALIDATION
+            /// FILE VALIDATION
             if (vm.Document != null && vm.Document.Length > 0)
             {
                 var extension = Path.GetExtension(vm.Document.FileName).ToLower();
@@ -69,11 +73,11 @@ namespace CMCS_Web_App.Controllers
                 if (!allowedExtensions.Contains(extension))
                 {
                     ModelState.AddModelError("Document", "Only PDF, DOCX, and XLSX files are allowed.");
-                    return View(vm); // <<< VERY IMPORTANT
+                    return View(vm); 
                 }
             }
 
-            // SAVE CLAIM
+            /// SAVE CLAIM
             var claim = new Claim
             {
                 LecturerId = lecturerId.Value,
@@ -83,7 +87,7 @@ namespace CMCS_Web_App.Controllers
                 Status = ClaimStatus.Pending
             };
 
-            // SAVE DOCUMENT
+            /// SAVE DOCUMENT
             if (vm.Document != null)
             {
                 var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");

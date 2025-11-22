@@ -29,19 +29,19 @@ namespace CMCS_Web_App.Controllers
         [HttpGet]
         public async Task<IActionResult> CoordDash()
         {
-            // Check if user is logged in
-            var userId = HttpContext.Session.GetInt32("UserId"); // ✅ use GetInt32
+            /// Check if user is logged in
+            var userId = HttpContext.Session.GetInt32("UserId"); 
             var role = HttpContext.Session.GetString("Role");
 
             if (userId == null || string.IsNullOrEmpty(role))
             {
-                // Session expired or user not logged in
+                /// Session expired or user not logged in
                 return RedirectToAction("Login", "Auth");
             }
 
-            if (role != "Coordinator") // ✅ ensure exact match
+            if (role != "Coordinator") 
             {
-                // Logged in but not authorized for this page
+                /// Logged in but not authorized for this page
                 return RedirectToAction("AccessDenied", "Auth");
             }
 
@@ -51,7 +51,7 @@ namespace CMCS_Web_App.Controllers
              .OrderByDescending(c => c.DateSubmitted)
              .ToListAsync();
 
-            return View (claims); // ✅ ensure /Views/Coordinator/CoordDash.cshtml exists
+            return View (claims); 
         }
         //------------------------------------------------------------------------------------------------------------------------------------------------------//
 

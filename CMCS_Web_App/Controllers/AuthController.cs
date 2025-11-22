@@ -39,7 +39,7 @@ namespace CMCS_Web_App.Controllers
             if (!ModelState.IsValid)
                 return View(vm);
 
-            // 1. Find user by email (shared across HR, Lecturer, Coordinator, Manager)
+            /// 1. Find user by email (shared across HR, Lecturer, Coordinator, Manager)
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == vm.Email);
 
@@ -49,7 +49,7 @@ namespace CMCS_Web_App.Controllers
                 return View(vm);
             }
 
-            // 2. Validate password
+            /// 2. Validate password
             var hashed = PasswordHasher.Hash(vm.Password);
 
             if (!string.Equals(hashed, user.PasswordHash, StringComparison.Ordinal))
@@ -58,7 +58,7 @@ namespace CMCS_Web_App.Controllers
                 return View(vm);
             }
 
-            // 3. Store session values
+            /// 3. Store session values
             HttpContext.Session.SetInt32("UserId", user.UserId);
 
             HttpContext.Session.SetString("Role", user.Role);
@@ -75,7 +75,7 @@ namespace CMCS_Web_App.Controllers
             
             Console.WriteLine("User logged in with role: " + user.Role);
 
-            // 4. Redirect based on role
+            /// 4. Redirect based on role
             return user.Role switch
             {
                 "Lecturer" => RedirectToAction("LecturerDash", "Lecturer"),
@@ -111,5 +111,8 @@ namespace CMCS_Web_App.Controllers
       
     }
 }
-    
+
+
+//--------------------------------------------------o-o-o-000-END OF FILE-000-o-o-o-------------------------------------------------------------------------------------------------------------//
+
 

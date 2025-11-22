@@ -30,13 +30,13 @@ namespace CMCS_Web_App.Controllers
             var userId = HttpContext.Session.GetString("UserId");
             var role = HttpContext.Session.GetString("Role");
 
-            // Check if user is logged in
+            
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(role))
             {
                 return RedirectToAction("Login", "Auth");
             }
 
-            // Check if user is authorized as Manager
+            
             if (role != "Manager")
             {
                 return RedirectToAction("AccessDenied", "Auth");

@@ -169,7 +169,7 @@ public class LecturerController : Controller
         if (!claims.Any())
         {
             ViewBag.Message = "No claims found for this lecturer.";
-            return View("MyClaims", claims); // still pass empty list
+            return View("MyClaims", claims); 
         }
 
         var lecturer = await _context.Lecturers.FindAsync(lecturerId);

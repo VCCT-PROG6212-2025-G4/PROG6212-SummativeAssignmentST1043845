@@ -32,19 +32,19 @@ namespace CMCS_Web_App.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
             var role = HttpContext.Session.GetString("Role");
 
-            // Not logged in
+          
             if (userId == null || string.IsNullOrEmpty(role))
             {
                 return RedirectToAction("Login", "Auth");
             }
 
-            // Wrong role
+            
             if (role != "HR")
             {
                 return RedirectToAction("AccessDenied", "Auth");
             }
 
-            // Optional: show name on UI
+            
             ViewBag.HRName = HttpContext.Session.GetString("UserName");
 
             return View();
@@ -65,14 +65,14 @@ namespace CMCS_Web_App.Controllers
         {
             if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
 
-            // Get all users and lecturers
+            
             var users = _context.Users.ToList();
             var lecturers = _context.Lecturers.ToList();
 
-            // Build view model
+            
             var model = users.Select(u =>
             {
-                // Only try to find a lecturer for users who have the role "Lecturer"
+                
                 Lecturer lec = null;
                 if (u.Role == "Lecturer")
                 {
@@ -154,7 +154,12 @@ namespace CMCS_Web_App.Controllers
 
 
 
-        // 2. Generate report (HTML view or PDF)
+        /// <summary>
+        /// 2. Generate report (HTML view or PDF)
+        /// </summary>
+        /// <param name="claimList"></param>
+        /// <param name="dateSubmitted"></param>
+        /// <returns></returns>
         [HttpPost]
         public FileResult GenerateApprovedClaimsReport(List<Claim> claimList, DateTime? dateSubmitted)
         {
@@ -200,31 +205,41 @@ namespace CMCS_Web_App.Controllers
                 }
             }
 
-            pdf.Save(stream); // ✔ FIXED
+            pdf.Save(stream); 
             stream.Position = 0;
 
             return File(stream.ToArray(), "application/pdf", "ApprovedClaims.pdf");
         }
 
 
-        // 3. Invoice generation UI (choose lecturer or all)
+        /// <summary>
+        /// 3. Invoice generation UI (choose lecturer or all)
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Invoices()
         {
             if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
 
-            // pass lecturers list to choose from
+            /// pass lecturers list to choose from
             var lecturers = _context.Lecturers.ToList();
             return View(lecturers);
         }
 
-        // 4. Generate invoice(s)
+        /// <summary>
+        /// 4. Generate invoice(s)
+        /// </summary>
+        /// <param name="lecturerId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> GenerateInvoices(int? lecturerId, DateTime from, DateTime to, string output = "pdf")
         {
             if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
 
-            // get approved claims grouped by lecturer
+            /// get approved claims grouped by lecturer
             var claims = await _reportService.GetApprovedClaimsAsync(from, to);
             var grouped = claims.GroupBy(c => c.Lecturer.Email);
 
@@ -246,7 +261,7 @@ namespace CMCS_Web_App.Controllers
             }
             else
             {
-                // Batch: create ZIP of PDFs (or return HTMLs)
+                /// Batch: create ZIP of PDFs (or return HTMLs)
                 using var mem = new MemoryStream();
                 using var archive = new System.IO.Compression.ZipArchive(mem, System.IO.Compression.ZipArchiveMode.Create, true);
 
@@ -441,3 +456,5 @@ namespace CMCS_Web_App.Controllers
         }
     }
 }
+
+//--------------------------------------------------o-o-o-000-END OF FILE-000-o-o-o-------------------------------------------------------------------------------------------------------------//
