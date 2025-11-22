@@ -42,12 +42,16 @@ C:\Users\KBM\.nuget\packages\bootstrap\5.3.8\contentFiles\any\any\wwwroot\js\boo
 C:\Users\KBM\.nuget\packages\bootstrap\5.3.8\contentFiles\any\any\wwwroot\js\bootstrap.js.map
 C:\Users\KBM\.nuget\packages\bootstrap\5.3.8\contentFiles\any\any\wwwroot\js\bootstrap.min.js
 C:\Users\KBM\.nuget\packages\bootstrap\5.3.8\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map
+wwwroot\uploads\39be9583-d4c2-4b77-b996-5e44c89bb506_ICE02 ITPP.docx
 wwwroot\uploads\3dcfcf78-797f-4fb5-8c09-d6a08046fbac_Resume..docx
 wwwroot\uploads\4d2dacef-5b69-4182-8dac-e00c80351e78_PROG6212POE.pdf
+wwwroot\uploads\6f7b7180-f092-4914-87f0-01a23abc5022__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf
 wwwroot\uploads\70a0af16-e7bb-4cca-a5f0-ccbdbd7f287d__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf
 wwwroot\uploads\73ec1bb0-088d-4605-9d9a-0db962815978_INSY6212 Assignment 2.docx
+wwwroot\uploads\750b0840-5e8e-4731-b196-cb322e3647c3_01_gettyimages-597661397_resized.jpg
 wwwroot\uploads\b3ebde24-6330-458a-97ba-4dc889a19b32_Resume..docx
 wwwroot\uploads\bc22fd3d-b748-49a3-9bfe-126bec9b9b83_no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg
+wwwroot\uploads\d1c0ddd2-9c15-4548-bf98-d3adb4dac703_.$insy a2.drawio.bkp
+wwwroot\uploads\d1ece98d-9ac7-491d-827f-6d7fff0da04c_ICE Task 3 INSY 6212.pdf
 wwwroot\uploads\d89a7850-d021-44d4-8de6-52d267329bbd__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf
 wwwroot\uploads\f3615cb3-20c6-4784-81d9-1585e0f6b600__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf
-wwwroot\uploads\6f7b7180-f092-4914-87f0-01a23abc5022__OceanofPDF.com_Successful_Project_Management_-_Gido.pdf

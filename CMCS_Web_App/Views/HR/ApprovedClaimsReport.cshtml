@@ -8,29 +8,32 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
             <label class="block font-semibold mb-1">From Date</label>
-            <input type="date" name="fromDate"
+            <input type="date"
+                   name="fromDate"
                    value="@Model.FromDate?.ToString("yyyy-MM-dd")"
                    class="w-full border-gray-300 rounded p-2">
         </div>
 
         <div>
             <label class="block font-semibold mb-1">To Date</label>
-            <input type="date" name="toDate"
+            <input type="date"
+                   name="toDate"
                    value="@Model.ToDate?.ToString("yyyy-MM-dd")"
                    class="w-full border-gray-300 rounded p-2">
         </div>
 
         <div class="flex items-end">
-            <button class="px-4 py-2 bg-blue-600 text-white rounded w-full hover:bg-blue-700">
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded w-full hover:bg-blue-700">
                 Filter
             </button>
         </div>
     </div>
 </form>
 
+
 <!-- ===================== PDF DOWNLOAD BUTTON ===================== -->
 
-<form method="post" asp-action="GenerateApprovedClaimsPdf" class="mb-8">
+<form method="post" asp-action="GenerateApprovedClaimsReport" class="mb-8">
     <input type="hidden" name="fromDate" value="@Model.FromDate" />
     <input type="hidden" name="toDate" value="@Model.ToDate" />
 

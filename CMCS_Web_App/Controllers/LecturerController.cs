@@ -111,8 +111,8 @@ public class LecturerController : Controller
         return RedirectToAction("MyClaims");
     }
 
- //---------------------------------------------------------------------------------------------------------------//
-  
+    //---------------------------------------------------------------------------------------------------------------//
+
     /// <summary>
     /// GET:
     /// </summary>
@@ -121,9 +121,29 @@ public class LecturerController : Controller
     [HttpGet]
     public IActionResult SubmitClaim()
     {
-   
-        return View();
+        // 1. Get the logged-in lecturer's ID from Session
+        var lecturerId = HttpContext.Session.GetInt32("LecturerId");
+
+        if (lecturerId == null)
+            return RedirectToAction("Login", "Auth");
+
+        // 2. Retrieve lecturer from the database
+        var lecturer = _context.Lecturers.FirstOrDefault(l => l.LecturerId == lecturerId);
+
+        if (lecturer == null)
+            return RedirectToAction("Login", "Auth");
+
+        // 3. Pre-fill the ViewModel
+        var vm = new ClaimVM
+        {
+            FirstName = lecturer.FirstName,
+            LastName = lecturer.LastName
+        };
+
+        // 4. Pass VM to the view
+        return View(vm);
     }
+
 
     //------------------------------------------------------------------------------------------------------------------------------------------------------------//
 

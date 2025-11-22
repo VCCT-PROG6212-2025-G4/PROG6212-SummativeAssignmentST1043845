@@ -42,10 +42,10 @@ namespace CMCS_Web_App.Controllers
                 return RedirectToAction("AccessDenied", "Auth");
             }
 
-            // Load claims
             var claims = await _context.Claims
-                .OrderByDescending(c => c.DateSubmitted)
-                .ToListAsync();
+            .Include(c => c.Lecturer)
+             .OrderByDescending(c => c.DateSubmitted)
+             .ToListAsync();
 
             return View("ManagerDash", claims);
         }

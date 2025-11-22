@@ -49,12 +49,6 @@ namespace CMCS_Web_App.Controllers
         //---------------------------------------------------------------------------------------------------------------------------------------//
 
         // GET: Claims/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Claims/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClaimVM vm)
@@ -66,31 +60,42 @@ namespace CMCS_Web_App.Controllers
             if (lecturerId == null)
                 return RedirectToAction("Login", "Auth");
 
-            var claim = new Claim
-            {
-                Description = vm.Description,
-                HoursWorked = (int)vm.HoursWorked,
-                LecturerId = lecturerId.Value,
-                DateSubmitted = DateTime.Now,
-                Status = ClaimStatus.Pending
-            };
-
+            // FILE VALIDATION
             if (vm.Document != null && vm.Document.Length > 0)
             {
                 var extension = Path.GetExtension(vm.Document.FileName).ToLower();
                 var allowedExtensions = new[] { ".pdf", ".docx", ".xlsx" };
+
                 if (!allowedExtensions.Contains(extension))
                 {
                     ModelState.AddModelError("Document", "Only PDF, DOCX, and XLSX files are allowed.");
-                    return View(vm);
+                    return View(vm); // <<< VERY IMPORTANT
                 }
+            }
 
+            // SAVE CLAIM
+            var claim = new Claim
+            {
+                LecturerId = lecturerId.Value,
+                HoursWorked = (int)vm.HoursWorked,
+                Notes = vm.Notes,
+                DateSubmitted = DateTime.Now,
+                Status = ClaimStatus.Pending
+            };
+
+            // SAVE DOCUMENT
+            if (vm.Document != null)
+            {
                 var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
                 Directory.CreateDirectory(uploadsFolder);
+
+                var extension = Path.GetExtension(vm.Document.FileName);
                 var fileName = $"{Guid.NewGuid()}{extension}";
                 var filePath = Path.Combine(uploadsFolder, fileName);
+
                 using var stream = new FileStream(filePath, FileMode.Create);
                 await vm.Document.CopyToAsync(stream);
+
                 claim.SupportingDocumentPath = "/uploads/" + fileName;
             }
 
@@ -99,6 +104,7 @@ namespace CMCS_Web_App.Controllers
 
             return RedirectToAction("MyClaims");
         }
+
 
 
         //------------------------------------------------------------------------------------------------------------------------------------------------------------------------//

@@ -1,4 +1,4 @@
-﻿@model CMCS_Web_App.Models.Claim
+﻿@model CMCS_Web_App.Models.ClaimVM
 @{
     Layout = "~/Views/Shared/_LecturerLayout.cshtml";
     ViewData["Title"] = "Submit Claim";
@@ -6,40 +6,70 @@
 
 <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8 mt-6">
     <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">
-        Submit Claim - @ViewBag.LecturerName
+        Submit Claim
     </h2>
 
     <form asp-controller="Lecturer" asp-action="SubmitClaim" method="post" enctype="multipart/form-data" class="space-y-6">
         @Html.AntiForgeryToken()
-        <label>Lecturer</label>
 
-        <label for="FirstName">First Name</label>
-        <input asp-for="FirstName" class="form-input" required />
+        <!-- Lecturer Info (Auto-filled) -->
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label for="FirstName" class="block text-gray-700 font-semibold mb-1">First Name</label>
+                <input asp-for="FirstName"
+                       class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-100"
+                       readonly />
+            </div>
 
-        <label for="LastName">Last Name</label>
-        <input asp-for="LastName" class="form-input" required />
+            <div>
+                <label for="LastName" class="block text-gray-700 font-semibold mb-1">Last Name</label>
+                <input asp-for="LastName"
+                       class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-100"
+                       readonly />
+            </div>
+        </div>
 
-        
+        <!-- Hours Worked -->
         <div>
             <label class="block text-gray-700 font-semibold mb-1">Hours Worked</label>
-            <input asp-for="HoursWorked" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-400" required />
-        </div><a href="c:\users\kbm\source\repos\cmcs_web_application\prog6212-part2st1043845\cmcs_web_app\views\lecturer\submitclaim.cshtml">c:\users\kbm\source\repos\cmcs_web_application\prog6212-part2st1043845\cmcs_web_app\views\lecturer\submitclaim.cshtml</a>
+            <input asp-for="HoursWorked"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-400"
+                   required />
+            <span asp-validation-for="HoursWorked" class="text-red-500"></span>
+        </div>
 
+        <!-- Notes -->
         <div>
             <label class="block text-gray-700 font-semibold mb-1">Notes</label>
-            <textarea asp-for="Notes" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-400" rows="4" placeholder="Add any relevant information..."></textarea>
+            <textarea asp-for="Notes"
+                      class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-400"
+                      rows="4"
+                      placeholder="Add any relevant information..."></textarea>
+            <span asp-validation-for="Notes" class="text-red-500"></span>
         </div>
 
+        <!-- Document Upload -->
         <div>
             <label class="block text-gray-700 font-semibold mb-1">Upload Supporting Document</label>
-            <input type="file" name="SupportingDocument" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-400" accept=".pdf,.docx,.xlsx" />
+
+            <input asp-for="Document"
+                   type="file"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-400"
+                   accept=".pdf,.docx,.xlsx" />
+
+            <span asp-validation-for="Document" class="text-red-500"></span>
         </div>
 
+        <!-- Submit Button -->
         <div class="text-center">
             <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition">
                 <i class="mdi mdi-send mr-2"></i> Submit Claim
             </button>
         </div>
+
     </form>
 </div>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

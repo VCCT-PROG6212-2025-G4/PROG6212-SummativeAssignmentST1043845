@@ -1,13 +1,18 @@
 ﻿using CMCS_Web_App.Data;
 using CMCS_Web_App.Models;
 using CMCS_Web_App.Services;
+using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
 using System.Xml.Linq;
+
 using static CMCS_Web_App.Data.AppDbContext;
 
+using XBrushes = PdfSharpCore.Drawing.XBrushes;
+using XStringFormats = PdfSharpCore.Drawing.XStringFormats;
 
 namespace CMCS_Web_App.Controllers
 {
@@ -52,7 +57,7 @@ namespace CMCS_Web_App.Controllers
             return HttpContext.Session.GetString("Role") == "HR";
         }
 
-      
+
         // ================================
         // USER MANAGER (NEW - replaces LecturerManager)
         // ================================
@@ -60,12 +65,19 @@ namespace CMCS_Web_App.Controllers
         {
             if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
 
+            // Get all users and lecturers
             var users = _context.Users.ToList();
             var lecturers = _context.Lecturers.ToList();
 
+            // Build view model
             var model = users.Select(u =>
             {
-                var lec = lecturers.FirstOrDefault(x => x.Email == u.Email);
+                // Only try to find a lecturer for users who have the role "Lecturer"
+                Lecturer lec = null;
+                if (u.Role == "Lecturer")
+                {
+                    lec = lecturers.FirstOrDefault(x => x.Email == u.Email);
+                }
 
                 return new User
                 {
@@ -84,6 +96,7 @@ namespace CMCS_Web_App.Controllers
             return View(model);
         }
 
+
         // ======================================
         // VIEW APPROVED CLAIMS
         // ======================================
@@ -101,71 +114,98 @@ namespace CMCS_Web_App.Controllers
         }
 
         [HttpGet("HR/ApprovedClaimsReport")]
-        public IActionResult ApprovedClaimsReport(DateTime? dateSubmitted)
+        public IActionResult ApprovedClaimsReport(DateTime? fromDate, DateTime? toDate)
         {
-            var claims = _context.Claims
-                .Where(c => c.ClaimStatus == ClaimStatus.Approved)
+            var query = _context.Claims
+                .Include(c => c.Lecturer)
+                .Where(c => c.Status == ClaimStatus.Approved)
                 .AsQueryable();
 
-            if (dateSubmitted.HasValue)
-            {
-                claims = claims.Where(c => c.DateSubmitted.Date == dateSubmitted.Value.Date);
-            }
+            if (fromDate.HasValue)
+                query = query.Where(c => c.DateSubmitted >= fromDate.Value);
 
-            return View(claims.ToList());
+            if (toDate.HasValue)
+                query = query.Where(c => c.DateSubmitted <= toDate.Value);
+
+            var claims = query.ToList();
+
+            var summary = claims
+                .GroupBy(c => c.Lecturer.Email)
+                .Select(g => new LecturerClaimsSummaryVM
+                {
+                    LecturerName = $"{g.First().Lecturer.FirstName} {g.First().Lecturer.LastName}",
+                    TotalHoursWorked = g.Sum(x => x.HoursWorked),
+                    RatePerHour = g.First().Lecturer.RatePerHour,
+                    TotalAmountPaid = g.Sum(x => x.HoursWorked * x.Lecturer.RatePerHour)
+                })
+                .ToList();
+
+            var vm = new ApprovedClaimsReportVM
+            {
+                Claims = claims,
+                Summary = summary,
+                FromDate = fromDate,
+                ToDate = toDate
+            };
+
+            return View(vm);
         }
+
 
 
 
         // 2. Generate report (HTML view or PDF)
         [HttpPost]
-        public IActionResult GenerateApprovedClaimsPdf(DateTime? dateSubmitted)
+        public FileResult GenerateApprovedClaimsReport(List<Claim> claimList, DateTime? dateSubmitted)
         {
-            var claims = _context.Claims
-                .Where(c => c.ClaimStatus == ClaimStatus.Approved)
-                .AsQueryable();
+            using var stream = new MemoryStream();
+            var pdf = new PdfSharpCore.Pdf.PdfDocument();
+
+            var page = pdf.AddPage();
+            var gfx = XGraphics.FromPdfPage(page);
+
+            var titleFont = new XFont("Verdana", 14, XFontStyle.Bold);
+            var font = new XFont("Verdana", 10);
+
+            gfx.DrawString("Approved Claims Report", titleFont, XBrushes.Black,
+                new XRect(0, 20, page.Width, 20), XStringFormats.TopCenter);
 
             if (dateSubmitted.HasValue)
             {
-                claims = claims.Where(c => c.DateSubmitted.Date == dateSubmitted.Value.Date);
+                gfx.DrawString($"Filtered by Date Submitted: {dateSubmitted.Value:yyyy-MM-dd}",
+                    font, XBrushes.Black,
+                    new XRect(20, 50, page.Width - 40, 20), XStringFormats.TopLeft);
             }
 
-            // ---- PDF CREATION ----
-            using (MemoryStream stream = new MemoryStream())
+            int yOffset = 90;
+
+            foreach (var claim in claimList)
             {
-                PdfDocument pdf = new PdfDocument();
-                var page = pdf.Pages.Add();
-                var gfx = XGraphics.FromPdfPage(page);
-                var font = new XFont("Verdana", 12);
+                var lecturerName = claim.Lecturer != null
+                    ? $"{claim.Lecturer.FirstName} {claim.Lecturer.LastName}"
+                    : "Unknown Lecturer";
 
-                gfx.DrawString("Approved Claims Report", font, XBrushes.Black,
-                    new XRect(0, 20, page.Width, 20), XStringFormats.TopCenter);
+                var text = $"Claim #{claim.ClaimId} - R{claim.TotalAmount:N2} - Lecturer: {lecturerName} - Submitted: {claim.DateSubmitted:yyyy-MM-dd}";
 
-                if (dateSubmitted.HasValue)
+                gfx.DrawString(text, font, XBrushes.Black,
+                    new XRect(20, yOffset, page.Width - 40, 20), XStringFormats.TopLeft);
+
+                yOffset += 20;
+
+                if (yOffset > page.Height - 60)
                 {
-                    gfx.DrawString($"Filtered by Date Submitted: {dateSubmitted.Value:yyyy-MM-dd}",
-                        font, XBrushes.Black,
-                        new XRect(20, 50, page.Width, 20), XStringFormats.TopLeft);
+                    page = pdf.AddPage();
+                    gfx = XGraphics.FromPdfPage(page);
+                    yOffset = 40;
                 }
-
-                int yOffset = 90;
-                foreach (var claim in claims)
-                {
-                    gfx.DrawString(
-                        $"Claim #{claim.ClaimId} - {claim.Amount} - Submitted: {claim.DateSubmitted:yyyy-MM-dd}",
-                        font,
-                        XBrushes.Black,
-                        new XRect(20, yOffset, page.Width, 20),
-                        XStringFormats.TopLeft);
-
-                    yOffset += 30;
-                }
-
-                pdf.Save(stream, false);
-                return File(stream.ToArray(), "application/pdf", "ApprovedClaimsReport.pdf");
             }
+
+            pdf.Save(stream); // ✔ FIXED
+            stream.Position = 0;
+
+            return File(stream.ToArray(), "application/pdf", "ApprovedClaims.pdf");
         }
-}
+
 
         // 3. Invoice generation UI (choose lecturer or all)
         [HttpGet]
@@ -235,7 +275,7 @@ namespace CMCS_Web_App.Controllers
                 return File(mem.ToArray(), contentType, $"Invoices_{from:yyyyMMdd}_{to:yyyyMMdd}.zip");
             }
         }
-
+     
 
         [HttpPost]
         public IActionResult AdjustRate(int lecturerId, int value)

@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@* Views/Shared/_ManagerLayout.cshtml *@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,31 +13,58 @@
     <link href="https://cdn.jsdelivr.net/npm/@@mdi/font/css/materialdesignicons.min.css" rel="stylesheet" />
 
     <style>
+        .sidebar {
+            transition: width 0.3s ease-in-out;
+        }
+
+        .sidebar-collapsed {
+            width: 0;
+        }
+
+        .sidebar-expanded {
+            width: 250px;
+        }
+
         .nav-active {
             color: #facc15;
-            border-bottom: 2px solid #facc15;
         }
     </style>
 </head>
 
 <body class="bg-gray-100 flex flex-col min-h-screen">
-    <header class="bg-gray-900 text-white shadow-md">
-        <nav class="container mx-auto flex flex-wrap justify-between items-center px-4 py-3">
-            <a asp-controller="Manager" asp-action="ManagerDash" class="text-2xl font-semibold tracking-wide hover:text-yellow-400 transition">
-                <i class="mdi mdi-account-tie text-yellow-400 mr-1"></i> CMCS
-            </a>
-            <ul class="flex flex-wrap items-center gap-6 text-sm md:text-base">
-                <li>
-                    <a asp-controller="Home" asp-action="Index" class="hover:text-yellow-400 transition">
-                        <i class="mdi mdi-home-outline mr-1"></i> Home
-                    </a>
-                </li>
+
+    <!-- ============================ -->
+    <!-- TOP NAVIGATION BAR -->
+    <!-- ============================ -->
+    <header class="bg-gray-900 text-white shadow-md fixed w-full z-20">
+        <nav class="flex justify-between items-center px-6 py-4">
+
+            <!-- Left side -->
+            <div class="flex items-center space-x-4">
+                <button id="menuToggle" class="text-2xl hover:text-yellow-400 transition">
+                    <i class="mdi mdi-menu"></i>
+                </button>
+
+                <a asp-controller="Manager" asp-action="ManagerDash"
+                   class="text-2xl font-semibold hover:text-yellow-400 transition flex items-center">
+                    <i class="mdi mdi-account-tie text-yellow-400 mr-2"></i> CMCS Manager
+                </a>
+            </div>
+
+            <!-- Right nav links -->
+            <ul class="flex items-center gap-6 text-sm md:text-base">
                 <li>
                     <a asp-controller="Manager" asp-action="ManagerDash" class="hover:text-yellow-400 transition">
                         <i class="mdi mdi-view-dashboard-outline mr-1"></i> Dashboard
                     </a>
                 </li>
+
                 <li>
+                    <a asp-controller="Manager" asp-action="AllClaims" class="hover:text-yellow-400 transition">
+                        <i class="mdi mdi-file-document-multiple-outline mr-1"></i> Claims
+                    </a>
+                </li>
+
                 <li>
                     <form asp-controller="Auth" asp-action="Logout" method="post" class="inline">
                         @Html.AntiForgeryToken()
@@ -42,33 +73,106 @@
                         </button>
                     </form>
                 </li>
-
-             
             </ul>
+
         </nav>
     </header>
 
-    <div class="text-center mt-8">
-        <div class="text-center mt-8">
-            <pre class="text-yellow-400 text-sm md:text-base font-mono whitespace-pre leading-tight">
-  ____ __  __  ____ ____  
- / ___|  \/  |/ ___/ ___| 
-| |    | |\/| | |   \___ \ 
-| |___ | |  | | |___ ___) |
- \____||_|  |_|\____|____/ 
-    </pre>
+    <!-- ============================ -->
+    <!-- LEFT SIDEBAR (Collapsible) -->
+    <!-- ============================ -->
+    <aside id="sidebar"
+           class="sidebar sidebar-expanded bg-gray-800 text-white fixed top-16 bottom-0 overflow-y-auto shadow-lg">
+
+        <div class="p-4 text-lg font-semibold border-b border-gray-700">
+            <i class="mdi mdi-shield-account mr-2"></i> Manager Menu
         </div>
 
-        <h1 class="text-3xl font-bold text-gray-800">Welcome Manager</h1>
-    </div>
+        <ul class="mt-4 space-y-2">
+            <li>
+                <a asp-controller="Manager" asp-action="ManagerDash"
+                   class="flex items-center px-4 py-2 hover:bg-gray-700 transition">
+                    <i class="mdi mdi-view-dashboard-outline mr-3"></i> Dashboard
+                </a>
+            </li>
 
-    <main class="container mx-auto px-4 mt-6 flex-grow">
+            <!-- Collapsible Claims Menu -->
+            <li>
+                <button id="claims-btn"
+                        class="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-700 transition">
+                    <span class="flex items-center">
+                        <i class="mdi mdi-file-document-box-multiple-outline mr-3"></i> Claims
+                    </span>
+                    <i id="claims-icon" class="mdi mdi-chevron-down"></i>
+                </button>
+
+                <div id="claims-menu" class="ml-8 mt-1 space-y-1 hidden">
+                    <a asp-controller="Manager" asp-action="AllClaims"
+                       class="block px-2 py-1 hover:bg-gray-700 transition">All Claims</a>
+
+                    <a asp-controller="Manager" asp-action="PendingClaims"
+                       class="block px-2 py-1 hover:bg-gray-700 transition">Pending</a>
+
+                    <a asp-controller="Manager" asp-action="ApprovedClaims"
+                       class="block px-2 py-1 hover:bg-gray-700 transition">Approved</a>
+
+                    <a asp-controller="Manager" asp-action="RejectedClaims"
+                       class="block px-2 py-1 hover:bg-gray-700 transition">Rejected</a>
+                </div>
+            </li>
+        </ul>
+
+        <form asp-controller="Auth" asp-action="Logout" method="post" class="mt-6 px-4">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+                    class="flex items-center px-2 py-2 rounded hover:bg-gray-700 hover:text-yellow-400 w-full">
+                <i class="mdi mdi-logout mr-2"></i> Logout
+            </button>
+        </form>
+    </aside>
+
+    <!-- ============================ -->
+    <!-- PAGE CONTENT -->
+    <!-- ============================ -->
+    <main id="mainContent" class="pt-24 pl-[260px] pr-6 pb-10 transition-all">
         @RenderBody()
     </main>
 
-    <footer class="bg-gray-900 text-gray-400 text-center py-3 mt-8">
+    <footer class="bg-gray-900 text-gray-400 text-center py-3 mt-auto">
         © @DateTime.Now.Year - CMCS Web App
     </footer>
+
+    <!-- ============================ -->
+    <!-- SCRIPTS -->
+    <!-- ============================ -->
+    <script>
+        const toggle = document.getElementById("menuToggle");
+        const sidebar = document.getElementById("sidebar");
+        const main = document.getElementById("mainContent");
+
+        // Sidebar collapse logic
+        toggle.addEventListener("click", () => {
+            sidebar.classList.toggle("sidebar-expanded");
+            sidebar.classList.toggle("sidebar-collapsed");
+
+            if (sidebar.classList.contains("sidebar-collapsed")) {
+                main.style.paddingLeft = "20px";
+            } else {
+                main.style.paddingLeft = "260px";
+            }
+        });
+
+        // Claims submenu
+        const claimsBtn = document.getElementById("claims-btn");
+        const claimsMenu = document.getElementById("claims-menu");
+        const claimsIcon = document.getElementById("claims-icon");
+
+        claimsBtn.addEventListener("click", () => {
+            claimsMenu.classList.toggle("hidden");
+            claimsIcon.classList.toggle("mdi-chevron-down");
+            claimsIcon.classList.toggle("mdi-chevron-up");
+        });
+    </script>
+
 </body>
 </html>
-

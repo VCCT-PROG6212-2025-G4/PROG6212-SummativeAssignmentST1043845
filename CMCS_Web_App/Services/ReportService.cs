@@ -71,6 +71,7 @@ namespace CMCS_Web_App.Services
             return sb.ToString();
         }
 
+
         // Convert HTML to PDF using DinkToPdf (optional)
         public byte[]? ConvertHtmlToPdf(string html)
         {

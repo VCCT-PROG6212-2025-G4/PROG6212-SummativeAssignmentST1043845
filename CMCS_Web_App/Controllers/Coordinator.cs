@@ -26,7 +26,7 @@ namespace CMCS_Web_App.Controllers
         ///  Updateded to include session-based role check
         /// </summary> 
 
-        [HttpGet("Coordinator/CoordinatorDash")]
+        [HttpGet]
         public async Task<IActionResult> CoordDash()
         {
             // Check if user is logged in
@@ -47,10 +47,11 @@ namespace CMCS_Web_App.Controllers
 
             // Load all claims for coordinator view
             var claims = await _context.Claims
-                .OrderByDescending(c => c.DateSubmitted)
-                .ToListAsync();
+             .Include(c => c.Lecturer)
+             .OrderByDescending(c => c.DateSubmitted)
+             .ToListAsync();
 
-            return View("CoordDash", claims); // ✅ ensure /Views/Coordinator/CoordDash.cshtml exists
+            return View (claims); // ✅ ensure /Views/Coordinator/CoordDash.cshtml exists
         }
         //------------------------------------------------------------------------------------------------------------------------------------------------------//
 
