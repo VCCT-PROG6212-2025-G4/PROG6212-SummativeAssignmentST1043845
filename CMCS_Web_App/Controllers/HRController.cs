@@ -58,9 +58,9 @@ namespace CMCS_Web_App.Controllers
         }
 
 
-        // ================================
+        // ===============================================
         // USER MANAGER (NEW - replaces LecturerManager)
-        // ================================
+        // =============================================
         public IActionResult UserManager()
         {
             if (!IsHR()) return RedirectToAction("AccessDenied", "Auth");
@@ -290,8 +290,13 @@ namespace CMCS_Web_App.Controllers
                 return File(mem.ToArray(), contentType, $"Invoices_{from:yyyyMMdd}_{to:yyyyMMdd}.zip");
             }
         }
-     
 
+        /// <summary>
+        /// Adjust lecturer rate per hour
+        /// </summary>
+        /// <param name="lecturerId"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AdjustRate(int lecturerId, int value)
         {
